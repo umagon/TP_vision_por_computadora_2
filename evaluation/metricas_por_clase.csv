@@ -1,0 +1,10 @@
+model,variant,class_idx,class_name,dice,iou,f1,hd,infer_ms,gpu_mb,n_params_M
+unetpp,v1_kaggle_8c,0,Fondo sup.,0.996056,0.992143,0.996056,2.7926,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,1,ILM-RNFL,0.947595,0.90041,0.947595,3.3471,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,2,RNFL-GCL,0.96416,0.930801,0.96416,3.3582,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,3,GCL-INL,0.922501,0.85615,0.922501,4.8836,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,4,INL-OPL,0.910268,0.835314,0.910268,6.3152,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,5,OPL-ONL,0.973613,0.948582,0.973613,4.5829,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,6,ONL-IS,0.94594,0.897426,0.94594,2.4391,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,7,IS-RPE,0.934764,0.877519,0.934764,2.5414,1345.59,0.0,36.63
+unetpp,v1_kaggle_8c,8,Fondo inf.,0.0,0.0,0.0,0.0,1345.59,0.0,36.63

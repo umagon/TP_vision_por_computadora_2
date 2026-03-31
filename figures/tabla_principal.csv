@@ -1,0 +1,2 @@
+model,variant,Dice,IoU,F1,Hausdorff,Infer_ms,GPU_MB,Params_M
+U-Net++,v1_kaggle_8c,0.8439,0.8043,0.8439,3.3622,1345.59,0.0,36.63
