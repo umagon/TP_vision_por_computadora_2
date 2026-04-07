@@ -45,8 +45,15 @@ dependencies = [
     "segmentation-models-pytorch>=0.5.0",
     "six==1.17.0",
     "stack-data==0.6.3",
-    "torch>=2.11.0",
+    "torch==2.2.2",
     "tornado==6.5.5",
     "traitlets==5.14.3",
     "wcwidth==0.6.0",
+  "retina-oct-demo-app",
 ]
+
+[tool.uv.workspace]
+members = ["retina-oct-demo-app"]
+
+[tool.uv.sources]
+retina-oct-demo-app = { workspace = true }

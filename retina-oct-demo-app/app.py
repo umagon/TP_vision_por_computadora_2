@@ -16,8 +16,10 @@ import time
 import sys
 import os
 
+
+DIRNAME = os.path.dirname(__file__)
 # Agregar raíz del proyecto al path
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, DIRNAME)
 
 from config import CLASS_NAMES, RETINAL_LAYERS, DEVICE, IMG_SIZE, SEG_IMG_SIZE
 from models.segmentation import load_segmentation_model
@@ -35,7 +37,7 @@ from utils.visualization import (
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Retina OCT | Segmentación + Clasificación",
-    page_icon="irisvision-demo.png",
+    page_icon=os.path.join(DIRNAME, "irisvision-demo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -105,7 +107,7 @@ def load_models():
 # Sidebar
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.image("irisvision-demo.png", width=140)
+    st.image(os.path.join(DIRNAME, "irisvision-demo.png"), width=140)
     st.title("Retina OCT Demo")
     st.markdown("---")
 
