@@ -14,7 +14,7 @@ from config import LAYER_COLORS, RETINAL_LAYERS, CLASS_NAMES
 def create_overlay(
     image: Image.Image,
     mask: np.ndarray,
-    alpha: float = 0.4,
+    alpha: float = 0.6,
     target_size: int = 256,
 ) -> Image.Image:
     """

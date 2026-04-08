@@ -15,11 +15,11 @@ from PIL import Image
 import time
 import sys
 import os
+from config import ROOT_DIR
 
 
-DIRNAME = os.path.dirname(__file__)
 # Agregar raíz del proyecto al path
-sys.path.insert(0, DIRNAME)
+sys.path.insert(0, ROOT_DIR)
 
 from config import CLASS_NAMES, RETINAL_LAYERS, DEVICE, IMG_SIZE, SEG_IMG_SIZE
 from models.segmentation import load_segmentation_model
@@ -37,7 +37,7 @@ from utils.visualization import (
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Retina OCT | Segmentación + Clasificación",
-    page_icon=os.path.join(DIRNAME, "irisvision-demo.png"),
+    page_icon=os.path.join(ROOT_DIR, "irisvision-demo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -107,7 +107,7 @@ def load_models():
 # Sidebar
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.image(os.path.join(DIRNAME, "irisvision-demo.png"), width=140)
+    st.image(os.path.join(ROOT_DIR, "irisvision-demo.png"), width=140)
     st.title("Retina OCT Demo")
     st.markdown("---")
 
@@ -124,7 +124,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("**Parámetros**")
-    overlay_alpha = st.slider("Transparencia del overlay", 0.1, 0.9, 0.4, 0.05)
+    overlay_alpha = st.slider("Transparencia del overlay", 0.1, 0.9, 0.6, 0.05)
     show_legend = st.checkbox("Mostrar leyenda de capas", value=True)
 
     st.markdown("---")
@@ -216,7 +216,7 @@ elif section == "🔬 Segmentación":
 
         with col_img:
             st.subheader("Imagen Original")
-            st.image(image, use_container_width=True, clamp=True)
+            st.image(image, width='stretch', clamp=True)
 
         # Ejecutar segmentación
         with st.spinner("Segmentando capas retinianas..."):
@@ -229,7 +229,7 @@ elif section == "🔬 Segmentación":
 
         with col_seg:
             st.subheader("Segmentación (Overlay)")
-            st.image(overlay_img, use_container_width=True, clamp=True)
+            st.image(overlay_img, width='stretch', clamp=True)
 
         # Info
         st.success(f"Segmentación completada en {elapsed:.2f}s")
@@ -245,10 +245,10 @@ elif section == "🔬 Segmentación":
             pct = c / total_pixels * 100
             layer_data.append({"Capa": name, "Píxeles": int(c), "Porcentaje": f"{pct:.1f}%"})
 
-        st.dataframe(layer_data, use_container_width=True)
+        st.dataframe(layer_data, width='stretch')
 
         if show_legend:
-            st.plotly_chart(create_segmentation_legend(), use_container_width=True)
+            st.plotly_chart(create_segmentation_legend(), width='stretch')
 
         # Guardar en session_state para uso en otras secciones
         st.session_state["seg_result"] = seg_result
@@ -298,7 +298,7 @@ elif section == "🧪 Clasificación":
             """, unsafe_allow_html=True)
             st.plotly_chart(
                 create_prob_bars(pred["probs"], "Probabilidades (Raw)"),
-                use_container_width=True,
+                width='stretch',
             )
 
         with col_seg:
@@ -313,7 +313,7 @@ elif section == "🧪 Clasificación":
             """, unsafe_allow_html=True)
             st.plotly_chart(
                 create_prob_bars(pred["probs"], "Probabilidades (Seg)"),
-                use_container_width=True,
+                width='stretch',
             )
 
         # Overlay de segmentación
@@ -322,8 +322,8 @@ elif section == "🧪 Clasificación":
 
         st.subheader("Segmentación utilizada")
         c1, c2 = st.columns(2)
-        c1.image(image.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", use_container_width=True)
-        c2.image(overlay_img, caption="Con overlay de capas", use_container_width=True)
+        c1.image(image.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", width='stretch')
+        c2.image(overlay_img, caption="Con overlay de capas", width='stretch')
 
         # Guardar resultados
         st.session_state["cls_results"] = cls
@@ -364,7 +364,7 @@ elif section == "📊 Comparativa":
         # Gráfico comparativo
         st.subheader("Comparativa de Probabilidades")
         fig = create_comparison_chart(raw["probs"], seg["probs"])
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
         # Diferencias numéricas
         st.subheader("Diferencia por Clase")
@@ -378,7 +378,7 @@ elif section == "📊 Comparativa":
                 "P(Seg)": f"{seg['probs'][i]:.3f}",
                 "Diferencia": f"{direction} {abs(diff):.3f}",
             })
-        st.dataframe(diff_data, use_container_width=True)
+        st.dataframe(diff_data, width='stretch')
 
         # Métricas de evaluación (placeholder para métricas del dataset completo)
         st.subheader("Métricas de Evaluación (Dataset Completo)")
@@ -393,7 +393,7 @@ elif section == "📊 Comparativa":
             "Sin Segmentación": ["—", "—", "—"],
             "Con Segmentación": ["—", "—", "—"],
         }
-        st.dataframe(metrics_placeholder, use_container_width=True)
+        st.dataframe(metrics_placeholder, width='stretch')
 
         st.markdown("""
         > **Nota:** Rellena esta tabla con los resultados de tu evaluación en el dataset
@@ -409,8 +409,8 @@ elif section == "📊 Comparativa":
             overlay = create_overlay(img, mask, alpha=overlay_alpha)
 
             c1, c2 = st.columns(2)
-            c1.image(img.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", use_container_width=True)
-            c2.image(overlay, caption="Segmentación", use_container_width=True)
+            c1.image(img.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", width='stretch')
+            c2.image(overlay, caption="Segmentación", width='stretch')
 
 
 # ─────────────────────────────────────────────

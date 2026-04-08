@@ -5,7 +5,16 @@
 ## Modelo clasificador de enfermedades de la retina del ojo
 
 ### Miembros:
+
 - Alexis Barniquez
 - Barbara Cerezo
 - Daniel Paniagua
 - Brian Salamone
+
+### Instalacion
+
+`uv sync`
+
+### Puesta en marcha
+
+`uv run streamlit run retina-oct-demo-app/app.py`

@@ -4,9 +4,12 @@ Ajusta estas rutas y parámetros según tu entorno.
 """
 import os
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # --- Rutas de pesos ---
-WEIGHTS_DIR = os.path.join(os.path.dirname(__file__), "weights")
-SEGMENTATION_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_sam_adapter.pth")
+WEIGHTS_DIR = os.path.join(ROOT_DIR, "modelos")
+SEGMENTATION_UNET_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_sam_adapter.pth")
+SEGMENTATION_UNETPLUSPLUS_WEIGHTS = os.path.join(WEIGHTS_DIR, "unetpp_smp_finetunning.pth")
 CLASSIFIER_RAW_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_raw.pth")
 CLASSIFIER_SEG_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_seg.pth")
 
