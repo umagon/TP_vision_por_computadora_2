@@ -34,6 +34,23 @@ def preprocess_image(image: Image.Image, target_size: int) -> torch.Tensor:
     arr = np.array(img, dtype=np.float32) / 255.0
     tensor = torch.from_numpy(arr).unsqueeze(0).unsqueeze(0)  # [1, 1, H, W]
     return tensor.to(DEVICE)
+    
+def preprocess_for_segmentation(image: Image.Image) -> torch.Tensor:
+    """Preprocesa para el segmentador: escala de grises, 224x512."""
+    img = image.convert("L")
+    img = img.resize((512, 224), Image.BILINEAR)  # PIL usa (ancho, alto)
+    arr = np.array(img, dtype=np.float32) / 255.0
+    tensor = torch.from_numpy(arr).unsqueeze(0).unsqueeze(0)  # [1, 1, 224, 512]
+    return tensor.to(DEVICE)
+
+def preprocess_for_classifier(image: Image.Image) -> torch.Tensor:
+    """Preprocesa para el clasificador: RGB, 224x224."""
+    img = image.convert("RGB")  # fuerza 3 canales
+    img = img.resize((224, 224), Image.BILINEAR)
+    arr = np.array(img, dtype=np.float32) / 255.0
+    arr = np.transpose(arr, (2, 0, 1))  # [H,W,C] → [C,H,W]
+    tensor = torch.from_numpy(arr).unsqueeze(0)  # [1,3,224,224]
+    return tensor.to(DEVICE)
 
 
 def masks_to_onehot(mask: torch.Tensor, num_classes: int) -> torch.Tensor:
@@ -59,7 +76,8 @@ def run_segmentation(
             - 'mask_onehot': tensor [1, NUM_SEG_CLASSES, H, W].
             - 'probabilities': tensor [1, NUM_SEG_CLASSES, H, W] probabilidades por capa.
     """
-    x = preprocess_image(image, SEG_IMG_SIZE)
+    #x = preprocess_image(image, SEG_IMG_SIZE)
+    x = preprocess_for_segmentation(image)
 
     model.eval()
     with torch.no_grad():
@@ -91,12 +109,15 @@ def run_classification(
             - 'seg': {'probs': array, 'pred_class': str, 'confidence': float}
     """
     # --- Escenario 1: Sin segmentación (imagen cruda) ---
-    x_raw = preprocess_image(image, IMG_SIZE)
+    #x_raw = preprocess_image(image, IMG_SIZE)
+    x_raw = preprocess_for_classifier(image)   # ← usa la nueva función
     probs_raw = classifier_raw.predict_proba(x_raw).squeeze(0).cpu().numpy()
     pred_idx_raw = int(np.argmax(probs_raw))
 
     # --- Escenario 2: Con segmentación (imagen + máscaras) ---
-    x_img = preprocess_image(image, IMG_SIZE)  # [1, 1, 224, 224]
+    #x_img = preprocess_image(image, IMG_SIZE)  # [1, 1, 224, 224]
+    x_img = preprocess_for_classifier(image)
+
 
     # Redimensionar one-hot masks al tamaño del clasificador
     mask_onehot = seg_result["mask_onehot"]  # [1, NUM_SEG_CLASSES, 256, 256]
@@ -104,7 +125,10 @@ def run_classification(
         mask_onehot, size=(IMG_SIZE, IMG_SIZE), mode="nearest"
     )  # [1, NUM_SEG_CLASSES, 224, 224]
 
-    x_seg = torch.cat([x_img, mask_resized], dim=1)  # [1, 1+NUM_SEG_CLASSES, 224, 224]
+    #x_seg = torch.cat([x_img, mask_resized], dim=1)  # [1, 1+NUM_SEG_CLASSES, 224, 224]
+    x_seg = x_img  # mantiene [1,3,224,224]
+
+
     probs_seg = classifier_seg.predict_proba(x_seg).squeeze(0).cpu().numpy()
     pred_idx_seg = int(np.argmax(probs_seg))
 

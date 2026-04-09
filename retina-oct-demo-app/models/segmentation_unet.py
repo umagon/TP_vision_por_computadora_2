@@ -19,14 +19,14 @@ class RetinaSAMAdapter(nn.Module):
     cuando tengas los pesos entrenados.
     """
 
-    def __init__(self, num_classes: int = NUM_SEG_CLASSES, encoder_name: str = "efficientnet-b0"):
+    def __init__(self, num_classes: int = NUM_SEG_CLASSES, encoder_name: str = "resnet34"):
         super().__init__()
-        self.model = smp.Unet(
+        self.model = smp.UnetPlusPlus(
             encoder_name=encoder_name,
-            encoder_weights="imagenet",
+            encoder_weights=None,
             in_channels=1,  # OCT es grayscale
             classes=num_classes,
-            activation=None,  # logits crudos, softmax en inferencia
+  #          activation=None,  # logits crudos, softmax en inferencia
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -48,7 +48,7 @@ class RetinaSAMAdapter(nn.Module):
         return mask
 
 
-def load_segmentation_model(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> RetinaSAMAdapter:
+def load_segmentation_model_OLD(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> RetinaSAMAdapter:
     """
     Carga el modelo de segmentación con pesos entrenados.
     Si no existen pesos, retorna el modelo con pesos de ImageNet.
@@ -66,3 +66,26 @@ def load_segmentation_model(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> Re
     model.to(DEVICE)
     model.eval()
     return model
+
+
+
+def load_segmentation_model(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> RetinaSAMAdapter:
+    model = RetinaSAMAdapter()
+    
+    if os.path.exists(weights_path):
+        state_dict = torch.load(weights_path, map_location=DEVICE, weights_only=True)
+        
+        # El .pth fue guardado directamente desde smp.UnetPlusPlus (sin wrapper),
+        # por eso las claves no tienen el prefijo "model."
+        # Se lo agregamos para que coincidan con RetinaUNETAdapter.self.model
+        state_dict = {"model." + k: v for k, v in state_dict.items()}
+        
+        model.load_state_dict(state_dict)
+        print(f"[Segmentación] Pesos cargados desde: {weights_path}")
+    else:
+        print(f"[Segmentación] AVISO: No se encontraron pesos en {weights_path}")
+        print("  → Usando pesos de ImageNet (encoder). Entrena el modelo primero.")
+    
+    model.to(DEVICE)
+    model.eval()
+    return model    

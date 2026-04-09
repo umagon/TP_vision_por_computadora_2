@@ -28,14 +28,13 @@ class RetinaClassifier(nn.Module):
         in_channels: int = 1,
         num_classes: int = NUM_CLASSES,
         backbone: str = "efficientnet",
-    ):
+        ):
         super().__init__()
         self.in_channels = in_channels
         self.backbone_name = backbone
 
         if backbone == "efficientnet":
             self.backbone = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.DEFAULT)
-            # Adaptar primera capa conv para N canales
             original_conv = self.backbone.features[0][0]
             self.backbone.features[0][0] = nn.Conv2d(
                 in_channels,
@@ -45,12 +44,12 @@ class RetinaClassifier(nn.Module):
                 padding=original_conv.padding,
                 bias=False,
             )
-            # Reemplazar cabeza de clasificación
             in_features = self.backbone.classifier[1].in_features
             self.backbone.classifier = nn.Sequential(
                 nn.Dropout(p=0.3),
                 nn.Linear(in_features, num_classes),
             )
+
         elif backbone == "resnet":
             self.backbone = models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
             original_conv = self.backbone.conv1
@@ -59,17 +58,14 @@ class RetinaClassifier(nn.Module):
                 original_conv.out_channels,
                 kernel_size=original_conv.kernel_size,
                 stride=original_conv.stride,
-                padding=original_conv.padding,
+                    padding=original_conv.padding,
                 bias=False,
             )
             in_features = self.backbone.fc.in_features
-            self.backbone.fc = nn.Sequential(
-                nn.Dropout(p=0.3),
-                nn.Linear(in_features, num_classes),
-            )
+            self.backbone.fc = nn.Linear(in_features, num_classes)  # ← sin Dropout, igual que en entrenamiento
+
         else:
             raise ValueError(f"Backbone no soportado: {backbone}")
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Args:
@@ -91,7 +87,7 @@ class RetinaClassifier(nn.Module):
 def load_classifier_model(
     mode: str = "raw",
     weights_path: str = None,
-    backbone: str = "efficientnet",
+    backbone: str = "resnet",
 ) -> RetinaClassifier:
     """
     Carga el clasificador para el escenario indicado.
@@ -102,10 +98,10 @@ def load_classifier_model(
         backbone: 'efficientnet' o 'resnet'.
     """
     if mode == "raw":
-        in_channels = 1
+        in_channels = 3
         default_path = CLASSIFIER_RAW_WEIGHTS
     elif mode == "seg":
-        in_channels = 1 + NUM_SEG_CLASSES
+        in_channels = 3
         default_path = CLASSIFIER_SEG_WEIGHTS
     else:
         raise ValueError(f"Modo no válido: {mode}. Usa 'raw' o 'seg'.")
@@ -117,7 +113,9 @@ def load_classifier_model(
 
     if os.path.exists(weights_path):
         state_dict = torch.load(weights_path, map_location=DEVICE, weights_only=True)
+        state_dict = {"backbone." + k: v for k, v in state_dict.items()}
         model.load_state_dict(state_dict)
+
         print(f"[Clasificador {mode}] Pesos cargados desde: {weights_path}")
     else:
         print(f"[Clasificador {mode}] AVISO: No se encontraron pesos en {weights_path}")

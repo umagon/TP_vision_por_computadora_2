@@ -322,7 +322,8 @@ elif section == "🧪 Clasificación":
 
         st.subheader("Segmentación utilizada")
         c1, c2 = st.columns(2)
-        c1.image(image.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", width='stretch')
+        c1.image(image.convert("L").resize(SEG_IMG_SIZE, Image.BILINEAR), caption="Original", width='stretch')
+        
         c2.image(overlay_img, caption="Con overlay de capas", width='stretch')
 
         # Guardar resultados
@@ -409,7 +410,7 @@ elif section == "📊 Comparativa":
             overlay = create_overlay(img, mask, alpha=overlay_alpha)
 
             c1, c2 = st.columns(2)
-            c1.image(img.convert("L").resize((SEG_IMG_SIZE, SEG_IMG_SIZE)), caption="Original", width='stretch')
+            c1.image(img.convert("L").resize(SEG_IMG_SIZE, Image.BILINEAR), caption="Original", width='stretch')
             c2.image(overlay, caption="Segmentación", width='stretch')
 
 

@@ -8,7 +8,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- Rutas de pesos ---
 WEIGHTS_DIR = os.path.join(ROOT_DIR, "modelos")
-SEGMENTATION_UNET_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_sam_adapter.pth")
+SEGMENTATION_UNET_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_unet_adapter.pth")
 SEGMENTATION_UNETPLUSPLUS_WEIGHTS = os.path.join(WEIGHTS_DIR, "unetpp_smp_finetunning.pth")
 CLASSIFIER_RAW_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_raw.pth")
 CLASSIFIER_SEG_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_seg.pth")
@@ -22,7 +22,9 @@ RETINAL_LAYERS = [
     "ILM", "NFL/GCL", "IPL", "INL", "OPL",
     "ONL", "ELM", "IS/OS", "RPE", "BM",
 ]
-NUM_SEG_CLASSES = len(RETINAL_LAYERS) + 1  # +1 fondo
+NUM_SEG_CLASSES_old = len(RETINAL_LAYERS) + 1  # +1 fondo
+
+NUM_SEG_CLASSES = 8
 
 # --- Colores para overlay de segmentación (RGB) ---
 LAYER_COLORS = [
@@ -40,8 +42,8 @@ LAYER_COLORS = [
 
 # --- Parámetros de imagen ---
 IMG_SIZE = 224
-SEG_IMG_SIZE = 256
-
+#SEG_IMG_SIZE = 256
+SEG_IMG_SIZE = (224, 512)   # (alto, ancho) — igual que en entrenamiento
 # --- Device ---
 import torch
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
