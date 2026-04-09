@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 from config import LAYER_COLORS, RETINAL_LAYERS, CLASS_NAMES
 
 
-def create_overlay(
+def create_overlay_old(
     image: Image.Image,
     mask: np.ndarray,
     alpha: float = 0.6,
@@ -45,6 +45,32 @@ def create_overlay(
 
     return Image.fromarray(blended)
 
+def create_overlay(
+    image: Image.Image,
+    mask: np.ndarray,
+    alpha: float = 0.6,
+    target_size: int = 256,
+) -> Image.Image:
+    img = image.convert("L").resize((target_size, target_size), Image.BILINEAR)
+    img_rgb = np.stack([np.array(img)] * 3, axis=-1).astype(np.float32)
+
+    # Redimensionar la máscara al mismo tamaño que la imagen
+    mask_pil = Image.fromarray(mask.astype(np.uint8))
+    mask_resized = np.array(
+        mask_pil.resize((target_size, target_size), Image.NEAREST)  # NEAREST para no mezclar clases
+    )
+
+    # Crear overlay coloreado
+    overlay = np.zeros((target_size, target_size, 3), dtype=np.float32)
+    for cls_idx in range(1, len(LAYER_COLORS) + 1):
+        color = LAYER_COLORS[cls_idx - 1]
+        region = mask_resized == cls_idx          # ← usa mask_resized
+        for c in range(3):
+            overlay[region, c] = color[c]
+
+    blended = img_rgb * (1 - alpha) + overlay * alpha
+    blended = np.clip(blended, 0, 255).astype(np.uint8)
+    return Image.fromarray(blended)
 
 def create_prob_bars(probs: np.ndarray, title: str = "") -> go.Figure:
     """

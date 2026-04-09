@@ -1,24 +1,18 @@
 import os
-
-from .segmentation_unet import RetinaSAMAdapter as RetinaSAMAdapterUNet, load_segmentation_model as load_segmentation_model_unet
 from .segmentation_unetplusplus import RetinaSAMAdapterPlusPlus, load_segmentation_model as load_segmentation_model_unetplusplus
+from .segmentation_unet import RetinaSAMAdapter as RetinaSAMAdapterUNet, load_segmentation_model as load_segmentation_model_unet
 
-# Permite seleccionar el modelo de segmentación en tiempo de ejecución.
-# Por defecto se usa U-Net clásico para mantener compatibilidad con la app.
-SEGMENTATION_MODEL = os.environ.get("SEGMENTATION_MODEL", "unet").strip().lower()
+# Por defecto usa unetplusplus, que es el modelo entrenado
+SEGMENTATION_MODEL = os.environ.get("SEGMENTATION_MODEL", "unetplusplus").strip().lower()
 
-if SEGMENTATION_MODEL == "unetplusplus":
-    RetinaSAMAdapter = RetinaSAMAdapterPlusPlus
-    load_segmentation_model = load_segmentation_model_unetplusplus
-else:
+if SEGMENTATION_MODEL == "unet":
     RetinaSAMAdapter = RetinaSAMAdapterUNet
     load_segmentation_model = load_segmentation_model_unet
+else:
+    RetinaSAMAdapter = RetinaSAMAdapterPlusPlus
+    load_segmentation_model = load_segmentation_model_unetplusplus
 
 __all__ = [
     "RetinaSAMAdapter",
     "load_segmentation_model",
-    "RetinaSAMAdapterUNet",
-    "RetinaSAMAdapterPlusPlus",
-    "load_segmentation_model_unet",
-    "load_segmentation_model_unetplusplus",
 ]
