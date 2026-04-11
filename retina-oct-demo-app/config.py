@@ -7,7 +7,8 @@ import os
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- Rutas de pesos ---
-WEIGHTS_DIR = os.path.join(ROOT_DIR, "modelos")
+WEIGHTS_DIR = os.path.join(ROOT_DIR, "weights")
+print('Root path: ', WEIGHTS_DIR)
 SEGMENTATION_UNET_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_unet_adapter.pth")
 SEGMENTATION_UNETPLUSPLUS_WEIGHTS = os.path.join(WEIGHTS_DIR, "unetpp_smp_finetunning.pth")
 CLASSIFIER_RAW_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_raw.pth")
