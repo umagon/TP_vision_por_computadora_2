@@ -26,9 +26,12 @@ def preprocess_for_segmentation(image: Image.Image) -> torch.Tensor:
     PIL usa (ancho, alto), PyTorch espera (alto, ancho).
     """
     img = image.convert("L")
-    img = img.resize((512, 224), Image.BILINEAR)   # PIL: (ancho=512, alto=224)
+    h, w = img.size[1], img.size[0]  # PIL usa (ancho, alto)
+    top = (h - 224) // 2
+    img = img.crop((0, top, 512, top + 224))
     arr = np.array(img, dtype=np.float32) / 255.0
     tensor = torch.from_numpy(arr).unsqueeze(0).unsqueeze(0)  # [1, 1, 224, 512]
+    print('arr',arr.shape,'tensor', tensor.shape)
     return tensor.to(DEVICE)
 
 
