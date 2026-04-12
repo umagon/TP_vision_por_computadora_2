@@ -98,8 +98,8 @@ def load_models():
     """Carga los 3 modelos una sola vez."""
     with st.spinner("Cargando modelos..."):
         seg_model = load_segmentation_model()
-        cls_raw = load_classifier_model(mode="raw")
-        cls_seg = load_classifier_model(mode="seg")
+        cls_raw = None # load_classifier_model(mode="raw")
+        cls_seg = None # load_classifier_model(mode="seg")
     return seg_model, cls_raw, cls_seg
 
 

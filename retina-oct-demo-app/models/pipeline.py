@@ -32,7 +32,6 @@ def preprocess_for_segmentation(image: Image.Image) -> torch.Tensor:
     img = img.crop((left, top, left+512, top + 224))
     arr = np.array(img, dtype=np.float32) / 255.0
     tensor = torch.from_numpy(arr).unsqueeze(0).unsqueeze(0)  # [1, 1, 224, 512]
-    print('arr',arr.shape,'tensor', tensor.shape)
     return tensor.to(DEVICE)
 
 
