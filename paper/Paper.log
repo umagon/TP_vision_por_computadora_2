@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  7 APR 2026 04:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  13 APR 2026 14:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -508,35 +508,39 @@ Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
 \backup@length=\skip59
 \ar@cellbox=\box59
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/comment/comment.sty
+\CommentStream=\write3
+
+Excluding comment 'comment')
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count314
 \l__pdf_internal_box=\box60
 )
 (./Paper.aux
-LaTeX Info: Redefining \. on input line 17.
-LaTeX Info: Redefining \% on input line 17.
+LaTeX Info: Redefining \. on input line 16.
+LaTeX Info: Redefining \% on input line 16.
 )
 \openout1 = `Paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
 
 -- Lines per column: 58 (exact).
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -561,31 +565,48 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 26.
+Package hyperref Info: Link coloring OFF on input line 27.
 
 (./Paper.out) (./Paper.out)
-\@outlinefile=\write3
-\openout3 = `Paper.out'.
+\@outlinefile=\write4
+\openout4 = `Paper.out'.
 
-LaTeX Info: Redefining \. on input line 26.
-LaTeX Info: Redefining \% on input line 26.
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
 ** WARNING: \and is valid only when in conference or peerreviewca
-modes (line 52).
+modes (line 53).
+Excluding 'comment' comment.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
 
 
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--105
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
 [][]\T1/ptm/m/it/10 [Citar tra-ba-jos de seg-men-ta-ción de ca-pas
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--105
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
 \T1/ptm/m/it/10 re-ti-na-les con deep lear-ning. Men-cio-nar U-Net++,
  []
 
+<example-image-a.pdf, id=90, 321.2pt x 240.9pt>
+File: example-image-a.pdf Graphic file (type pdf)
+<use example-image-a.pdf>
+Package pdftex.def Info: example-image-a.pdf  used on input line 127.
+(pdftex.def)             Requested size: 252.0pt x 189.00398pt.
 
 
 [1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/l
@@ -593,25 +614,8 @@ ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-<example-image-a.pdf, id=106, 321.2pt x 240.9pt>
-File: example-image-a.pdf Graphic file (type pdf)
-<use example-image-a.pdf>
-Package pdftex.def Info: example-image-a.pdf  used on input line 118.
-(pdftex.def)             Requested size: 252.0pt x 189.00398pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 142
-.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 142
-.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 16
-1.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 17
+0.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
@@ -626,42 +630,48 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <example-image-b.pdf, id=141, 321.2pt x 240.9pt>
 File: example-image-b.pdf Graphic file (type pdf)
 <use example-image-b.pdf>
-Package pdftex.def Info: example-image-b.pdf  used on input line 308.
+Package pdftex.def Info: example-image-b.pdf  used on input line 317.
 (pdftex.def)             Requested size: 252.0pt x 189.00398pt.
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 
-[3 </usr/local/texlive/2025/texmf-dist/tex/latex/mwe/example-image-b.pdf>]
-<captura-demo.png, id=162, 1282.7925pt x 540.0175pt>
+<captura-demo.png, id=144, 1282.7925pt x 540.0175pt>
 File: captura-demo.png Graphic file (type png)
 <use captura-demo.png>
-Package pdftex.def Info: captura-demo.png  used on input line 364.
+Package pdftex.def Info: captura-demo.png  used on input line 373.
 (pdftex.def)             Requested size: 252.0pt x 106.08167pt.
 
-(./Paper.bbl
+
+[3 </usr/local/texlive/2025/texmf-dist/tex/latex/mwe/example-image-b.pdf> <./ca
+ptura-demo.png>] (./Paper.bbl
 
 )
 
-[4 <./captura-demo.png>] (./Paper.aux
-LaTeX Info: Redefining \. on input line 17.
-LaTeX Info: Redefining \% on input line 17.
+[4] (./Paper.aux
+LaTeX Info: Redefining \. on input line 18.
+LaTeX Info: Redefining \% on input line 18.
 )
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `Paper.out' has not changed.
 (rerunfilecheck)             Checksum: C7557FDF90B4BE6156E0757EF7B4BDF3;3744.
  ) 
 Here is how much of TeX's memory you used:
- 14665 strings out of 473190
- 234723 string characters out of 5715800
- 665081 words of memory out of 5000000
- 37676 multiletter control sequences out of 15000+600000
- 668784 words of font info for 150 fonts, out of 8000000 for 9000
+ 14728 strings out of 473190
+ 235861 string characters out of 5715800
+ 665030 words of memory out of 5000000
+ 37731 multiletter control sequences out of 15000+600000
+ 670329 words of font info for 156 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,1054b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1050b,459s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></
@@ -677,7 +687,7 @@ xmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/f
 onts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/time
 s/utmri8a.pfb>
-Output written on Paper.pdf (4 pages, 400011 bytes).
+Output written on Paper.pdf (4 pages, 396402 bytes).
 PDF statistics:
  249 PDF objects out of 1000 (max. 8388607)
  207 compressed objects within 3 object streams

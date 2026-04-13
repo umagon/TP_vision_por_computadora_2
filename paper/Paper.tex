@@ -19,6 +19,7 @@
 \usepackage{float}
 \usepackage{subcaption}
 \usepackage{array}
+\usepackage{comment}
 
 % Colores para las guías (eliminar en versión final)
 \newcommand{\guia}[1]{\textcolor{blue}{\textit{[#1]}}}
@@ -29,7 +30,7 @@
 % Título y Autores
 % ============================================================
 
-\title{¿Mejora la Segmentación de Capas Retinales la Clasificación de Enfermedades en Imágenes OCT? Un Estudio Comparativo con Análisis de Ablación}
+\title{Segmentación y clasificación de patologías retinales en imágenes OCT mediante Deep Learning}
 
 \author{
 \IEEEauthorblockN{Alexis Barniquez - alexisbarnique@gmail.com,}
@@ -53,7 +54,7 @@
 % ============================================================
 % Abstract
 % ============================================================
-
+\begin{comment}
 \begin{abstract}
 \guia{Escribir al final, cuando el paper esté completo. 150-200 palabras máximo.}
  
@@ -63,6 +64,15 @@ La tomografía de coherencia óptica (OCT) es una técnica de imagen no invasiva
 \begin{IEEEkeywords}
 OCT, segmentación semántica, clasificación de imágenes médicas, deep learning, retina, ablation study.
 \end{IEEEkeywords}
+\end{comment}
+
+\begin{abstract}
+Las enfermedades retinales (CNV, DME, Drusen) son causas principales de pérdida visual; la OCT es el estándar de diagnóstico por imagen. En este trabajo se evalúa si la segmentación semántica de capas retinales como preprocesamiento mejora la clasificación automática de patologías en imágenes OCT. Para ello se entrenó un modelo UNet++ (ResNet34) para segmentación de 8 capas retinales, y dos clasificadores ResNet50: uno sobre imágenes originales y otro sobre las máscaras de segmentación generadas. El modelo de segmentación alcanzó un Dice de 0.84 (5-fold CV). El clasificador sobre imágenes originales logró 94\% de accuracy, mientras que el clasificador sobre máscaras de segmentación alcanzó 70\%. Este hallazgo nos indica que la información de textura y contraste de las imágenes originales resulta más discriminativa para la clasificación de patologías que la información puramente estructural de las máscaras de segmentación.
+\end{abstract}
+
+\begin{IEEEkeywords}
+OCT, segmentación semántica, clasificación de imágenes médicas, deep learning, retina.
+\end{IEEEkeywords}
 
 % ============================================================
 % I. INTRODUCCIÓN
@@ -71,16 +81,14 @@ OCT, segmentación semántica, clasificación de imágenes médicas, deep learni
 \section{Introducción}
 La tomografía de coherencia óptica (OCT, por sus siglas en inglés) es una modalidad de imagen no invasiva que permite obtener cortes transversales de alta resolución de la retina. Esta técnica se ha convertido en una herramienta fundamental para el diagnóstico y seguimiento de diversas patologías oculares, incluyendo la neovascularización coroidal (CNV), el edema macular diabético (DME) y las drusas \cite{kermany2018}.
  
-\guia{Párrafo sobre el problema: La interpretación manual de OCT requiere especialistas, es subjetiva y consume tiempo. Motivación para automatización con deep learning.}
+La interpretación manual de OCT requiere especialistas, es subjetiva y consume tiempo. Esto impulsa la necesidad de automatización con deep learning.
  
 En los últimos años, las redes neuronales convolucionales han demostrado un desempeño notable en la clasificación automática de imágenes OCT \cite{kermany2018}. Sin embargo, la mayoría de los enfoques tratan la imagen como una entrada opaca, sin considerar explícitamente la estructura anatómica de la retina. La retina está compuesta por múltiples capas diferenciadas, y distintas patologías afectan capas específicas: por ejemplo, las drusas se acumulan entre el epitelio pigmentario retinal (RPE) y la membrana de Bruch, mientras que el DME se manifiesta como engrosamiento en las capas internas \cite{huang1991}.
- 
-\guia{Párrafo sobre la hipótesis: ¿Proporcionar al clasificador información explícita sobre la estructura de capas retinales mejora su capacidad diagnóstica?}
- 
-Las contribuciones principales de este trabajo son:
+
+¿La segmentación semántica de capas retinales como paso previo mejora la clasificación de patologías en OCT?. Las contribuciones principales de este trabajo son:
 \begin{enumerate}
     \item Un modelo de segmentación semántica de capas retinales basado en U-Net++ con validación cruzada de 5 pliegues.
-    \item Una comparación directa entre clasificación sobre imágenes crudas y clasificación enriquecida con información de segmentación.
+    \item Un modelo clasificador 1 usando resnet
     \item Un estudio de ablación que identifica qué capas retinales aportan mayor información discriminativa para cada patología.
 \end{enumerate}
 
