@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  14 APR 2026 03:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  14 APR 2026 05:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -621,23 +621,27 @@ Underfull \hbox (badness 1688) in paragraph at lines 115--116
 
 
 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 
 [2]
 
-<captura-demo.png, id=127, 1282.7925pt x 540.0175pt>
+<captura-demo.png, id=131, 1282.7925pt x 540.0175pt>
 File: captura-demo.png Graphic file (type png)
 <use captura-demo.png>
-Package pdftex.def Info: captura-demo.png  used on input line 258.
+Package pdftex.def Info: captura-demo.png  used on input line 269.
 (pdftex.def)             Requested size: 252.0pt x 106.08167pt.
 
 
-[3 <./captura-demo.png>] (./Paper.bbl)
+[3] (./Paper.bbl
 
+)
 
-
-[4
-
-] (./Paper.aux
+[4 <./captura-demo.png>] (./Paper.aux
 LaTeX Info: Redefining \. on input line 16.
 LaTeX Info: Redefining \% on input line 16.
 )
@@ -645,34 +649,43 @@ LaTeX Info: Redefining \% on input line 16.
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `Paper.out' has not changed.
-(rerunfilecheck)             Checksum: 2976071EE8CC1047AD8A0AE1D0D9AF19;3199.
+
+
+Package rerunfilecheck Warning: File `Paper.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Paper.out':
+(rerunfilecheck)             Before: 9996DB8298F8CE03BF666E57E69C9ED7;3543
+(rerunfilecheck)             After:  C56208392BB5D4FBF8DF5CAADFBF8FA3;3546.
  ) 
 Here is how much of TeX's memory you used:
- 14642 strings out of 473190
- 233896 string characters out of 5715800
- 663743 words of memory out of 5000000
- 37650 multiletter control sequences out of 15000+600000
+ 14647 strings out of 473190
+ 233996 string characters out of 5715800
+ 663762 words of memory out of 5000000
+ 37653 multiletter control sequences out of 15000+600000
  670329 words of font info for 156 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,1314b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,1242b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
-/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
-sr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
-local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loc
-al/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
-l/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/
-texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
-xlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/20
-25/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-d
-ist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts
-/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw
-/times/utmri8a.pfb>
-Output written on Paper.pdf (4 pages, 370969 bytes).
+></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
+/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
+cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
+/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/te
+xlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texl
+ive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/
+texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/
+2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf
+-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fon
+ts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/u
+rw/times/utmri8a.pfb>
+Output written on Paper.pdf (4 pages, 387249 bytes).
 PDF statistics:
- 222 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
- 49 named destinations out of 1000 (max. 500000)
- 150 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 237 PDF objects out of 1000 (max. 8388607)
+ 197 compressed objects within 2 object streams
+ 51 named destinations out of 1000 (max. 500000)
+ 158 words of extra memory for PDF output out of 10000 (max. 10000000)
 
