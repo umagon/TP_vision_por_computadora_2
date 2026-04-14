@@ -1,24 +1,26 @@
 """
 Clasificador de patologías retinianas (CNV, DME, Drusen, Normal).
-Dos escenarios:
-  - Sin segmentación: entrada de 1 canal (imagen OCT cruda).
-  - Con segmentación: entrada de N+1 canales (imagen + máscaras de capas).
+Tres escenarios:
+  - Modelo 1 (raw): entrada RGB (3 canales) — imagen OCT directa.
+  - Modelo 2 (seg): entrada RGB (3 canales) — máscara de segmentación coloreada.
+  - Modelo 3 (hybrid): entrada de 4 canales (RGB + máscara argmax como canal extra).
 """
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from config import NUM_CLASSES, NUM_SEG_CLASSES, DEVICE, CLASSIFIER_RAW_WEIGHTS, CLASSIFIER_SEG_WEIGHTS
+from config import NUM_CLASSES, NUM_SEG_CLASSES, DEVICE, CLASSIFIER_RAW_WEIGHTS, CLASSIFIER_SEG_WEIGHTS, CLASSIFIER_HYBRID_WEIGHTS
 import os
 
 
 class RetinaClassifier(nn.Module):
     """
-    Clasificador basado en EfficientNet-B0 con transfer learning.
+    Clasificador basado en ResNet50 con transfer learning.
 
     Args:
         in_channels: Número de canales de entrada.
-            - 1 para imagen OCT cruda (escenario sin segmentación).
-            - 1 + NUM_SEG_CLASSES para imagen + one-hot masks (escenario con segmentación).
+            - 3 para imagen OCT RGB (Modelo 1: raw).
+            - 3 para máscara coloreada RGB (Modelo 2: seg).
+            - 4 para imagen RGB + canal de máscara (Modelo 3: hybrid).
         num_classes: Número de clases de patología.
         backbone: 'efficientnet' o 'resnet'.
     """
@@ -93,7 +95,9 @@ def load_classifier_model(
     Carga el clasificador para el escenario indicado.
 
     Args:
-        mode: 'raw' (sin segmentación, 1 canal) o 'seg' (con segmentación, 1+N canales).
+        mode: 'raw' (imagen RGB, 3 canales),
+              'seg' (máscara coloreada RGB, 3 canales),
+              'hybrid' (RGB + máscara, 4 canales).
         weights_path: Ruta a los pesos. Si None, usa la ruta por defecto.
         backbone: 'efficientnet' o 'resnet'.
     """
@@ -103,8 +107,11 @@ def load_classifier_model(
     elif mode == "seg":
         in_channels = 3
         default_path = CLASSIFIER_SEG_WEIGHTS
+    elif mode == "hybrid":
+        in_channels = 4
+        default_path = CLASSIFIER_HYBRID_WEIGHTS
     else:
-        raise ValueError(f"Modo no válido: {mode}. Usa 'raw' o 'seg'.")
+        raise ValueError(f"Modo no válido: {mode}. Usa 'raw', 'seg' o 'hybrid'.")
 
     if weights_path is None:
         weights_path = default_path

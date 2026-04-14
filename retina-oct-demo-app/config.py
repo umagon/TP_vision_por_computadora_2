@@ -8,43 +8,40 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- Rutas de pesos ---
 WEIGHTS_DIR = os.path.join(ROOT_DIR, "weights")
-print('Root path: ', WEIGHTS_DIR)
 SEGMENTATION_UNET_WEIGHTS = os.path.join(WEIGHTS_DIR, "retina_unet_adapter.pth")
 SEGMENTATION_UNETPLUSPLUS_WEIGHTS = os.path.join(WEIGHTS_DIR, "unetpp_smp_finetunning.pth")
-CLASSIFIER_RAW_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_raw.pth")
-CLASSIFIER_SEG_WEIGHTS = os.path.join(WEIGHTS_DIR, "classifier_seg.pth")
+CLASSIFIER_RAW_WEIGHTS = os.path.join(WEIGHTS_DIR, "modelo1_raw_resnet50.pth")
+CLASSIFIER_SEG_WEIGHTS = os.path.join(WEIGHTS_DIR, "modelo2_seg_resnet50.pth")
+CLASSIFIER_HYBRID_WEIGHTS = os.path.join(WEIGHTS_DIR, "modelo3_raw_seg_resnet50.pth")
 
 # --- Clases de patología ---
 CLASS_NAMES = ["CNV", "DME", "DRUSEN", "NORMAL"]
 NUM_CLASSES = len(CLASS_NAMES)
 
 # --- Capas retinianas para segmentación ---
+# El modelo UNet++ produce 8 clases: fondo (0) + 7 capas retinianas (1-7)
 RETINAL_LAYERS = [
-    "ILM", "NFL/GCL", "IPL", "INL", "OPL",
-    "ONL", "ELM", "IS/OS", "RPE", "BM",
+    "Capa 1", "Capa 2", "Capa 3", "Capa 4",
+    "Capa 5", "Capa 6", "Capa 7",
 ]
-NUM_SEG_CLASSES_old = len(RETINAL_LAYERS) + 1  # +1 fondo
-
 NUM_SEG_CLASSES = 8
 
 # --- Colores para overlay de segmentación (RGB) ---
+# 7 colores para las 7 capas retinianas (clase 0 = fondo, sin color)
 LAYER_COLORS = [
-    (255, 0, 0),      # ILM - rojo
-    (0, 255, 0),      # NFL/GCL - verde
-    (0, 0, 255),      # IPL - azul
-    (255, 255, 0),    # INL - amarillo
-    (255, 0, 255),    # OPL - magenta
-    (0, 255, 255),    # ONL - cian
-    (255, 128, 0),    # ELM - naranja
-    (128, 0, 255),    # IS/OS - violeta
-    (0, 128, 128),    # RPE - teal
-    (128, 128, 0),    # BM - oliva
+    (255, 0, 0),      # Capa 1 - rojo
+    (0, 255, 0),      # Capa 2 - verde
+    (0, 0, 255),      # Capa 3 - azul
+    (255, 255, 0),    # Capa 4 - amarillo
+    (255, 0, 255),    # Capa 5 - magenta
+    (0, 255, 255),    # Capa 6 - cian
+    (255, 128, 0),    # Capa 7 - naranja
 ]
 
 # --- Parámetros de imagen ---
 IMG_SIZE = 224
-#SEG_IMG_SIZE = 256
 SEG_IMG_SIZE = (224, 512)   # (alto, ancho) — igual que en entrenamiento
+
 # --- Device ---
 import torch
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

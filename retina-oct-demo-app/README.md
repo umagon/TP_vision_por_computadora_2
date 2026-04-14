@@ -1,27 +1,29 @@
-# Retina OCT Demo — Segmentation-Aware Classification
+# Retina OCT Demo — Segmentación y clasificación de patologías retinales en imágenes OCT mediante Deep Learning-Aware Classification
 
-Demo web interactivo para el paper *"Segmentation-Aware Classification of Retinal Diseases using Kaggle OCT"*.
+Demo web interactivo para el paper *"Segmentación y clasificación de patologías retinales en imágenes OCT mediante Deep Learning"*.
 
 ## Estructura del Proyecto
 
 ```
-retina-oct-demo/
-├── app.py                  # App principal de Streamlit
-├── config.py               # Configuración (rutas, clases, device)
-├── requirements.txt        # Dependencias de Python
+retina-oct-demo-app/
+├── app.py                          # App principal de Streamlit
+├── config.py                       # Configuración (rutas, clases, device)
+├── requirements.txt                # Dependencias de Python
 ├── models/
 │   ├── __init__.py
-│   ├── segmentation.py     # RetinaSAM-Adapter (U-Net + encoder)
-│   ├── classifier.py       # EfficientNet/ResNet para clasificación
-│   └── pipeline.py         # Pipeline completo de inferencia
+│   ├── segmentation.py             # Router entre UNet y UNet++
+│   ├── segmentation_unetplusplus.py # UNet++ (smp) con encoder ResNet34
+│   ├── segmentation_unet.py        # UNet alternativo (legacy)
+│   ├── classifier.py               # ResNet50 para clasificación (3 modos)
+│   └── pipeline.py                 # Pipeline completo de inferencia
 ├── utils/
 │   ├── __init__.py
-│   └── visualization.py    # Overlay, gráficos, comparativas
-├── weights/                # Aquí colocar los archivos .pth
-│   ├── retina_sam_adapter.pth
-│   ├── classifier_raw.pth
-│   └── classifier_seg.pth
-└── assets/                 # Imágenes de ejemplo (opcional)
+│   └── visualization.py            # Overlay, gráficos, comparativas
+└── weights/                        # Archivos .pth de pesos entrenados
+    ├── unetpp_smp_finetunning.pth
+    ├── modelo1_raw_resnet50.pth
+    ├── modelo2_seg_resnet50.pth
+    └── modelo3_raw_seg_resnet50.pth
 ```
 
 ## Instalación
@@ -32,7 +34,7 @@ pip install -r requirements.txt
 
 ## Uso
 
-1. **Entrena tus modelos** y coloca los pesos `.pth` en la carpeta `weights/`.
+1. Coloca los pesos `.pth` entrenados en la carpeta `weights/`.
 2. Ejecuta la app:
 
 ```bash
@@ -40,22 +42,38 @@ streamlit run app.py
 ```
 
 3. Navega entre las secciones:
-   - **Segmentación**: sube una imagen OCT y visualiza las capas segmentadas.
-   - **Clasificación**: obtén predicciones en ambos escenarios (raw y seg).
-   - **Comparativa**: visualiza diferencias entre los escenarios.
+   - **Segmentación**: sube una imagen OCT y visualiza las 7 capas retinianas segmentadas con UNet++.
+   - **Clasificación**: obtén predicciones en los 3 escenarios (raw, seg, hybrid).
+   - **Comparativa**: visualiza diferencias entre los escenarios con métricas reales.
+
+## Modelos
+
+### Segmentación
+UNet++ con encoder ResNet34 (segmentation_models_pytorch). Entrada: imagen en escala de grises 224x512, 1 canal. Salida: máscara de 8 clases (fondo + 7 capas retinianas). Dice: 0.9814, IoU: 0.9637.
+
+### Clasificación (3 escenarios)
+
+| Modelo | Entrada | Canales | Accuracy |
+|--------|---------|---------|----------|
+| Modelo 1 (Raw) | Imagen RGB | 3 | 92% |
+| Modelo 2 (Seg) | Máscara coloreada RGB | 3 | 72% |
+| Modelo 3 (Hybrid) | RGB + canal de máscara | 4 | 92% |
+
+Todos usan ResNet50 con pesos preentrenados IMAGENET1K_V2.
 
 ## Pesos Esperados
 
 | Archivo | Descripción |
 |---------|------------|
-| `retina_sam_adapter.pth` | state_dict del modelo de segmentación |
-| `classifier_raw.pth` | Clasificador entrenado solo con imágenes crudas (1 canal) |
-| `classifier_seg.pth` | Clasificador entrenado con imagen + máscaras (1+N canales) |
+| `unetpp_smp_finetunning.pth` | state_dict del UNet++ (segmentación, 8 clases) |
+| `modelo1_raw_resnet50.pth` | ResNet50 entrenado con imágenes RGB directas |
+| `modelo2_seg_resnet50.pth` | ResNet50 entrenado con máscaras de segmentación coloreadas |
+| `modelo3_raw_seg_resnet50.pth` | ResNet50 entrenado con 4 canales (RGB + máscara) |
 
-Sin pesos, la app cargará modelos con pesos de ImageNet (encoder) y dará predicciones no entrenadas.
+Sin pesos, la app mostrará una advertencia y dará predicciones aleatorias.
 
 ## Personalización
 
-- Edita `config.py` para cambiar clases, capas retinianas o rutas.
-- Reemplaza `RetinaSAMAdapter` en `models/segmentation.py` con tu implementación real de SAM-Adapter.
-- Cambia el backbone en `load_classifier_model(backbone="resnet")` para usar ResNet50.
+- Edita `config.py` para cambiar clases, capas retinianas, rutas de pesos o tamaños de imagen.
+- El modelo de segmentación por defecto es UNet++. Para usar el UNet alternativo, setea la variable de entorno `SEGMENTATION_MODEL=unet`.
+- El backbone de clasificación se configura en `load_classifier_model(backbone="resnet")`.
