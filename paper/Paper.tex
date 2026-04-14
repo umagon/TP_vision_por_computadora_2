@@ -12,22 +12,17 @@
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
 \usepackage{amssymb,amsfonts}
-\usepackage{text comp}
+\usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{float}
 \usepackage{subcaption}
 \usepackage{array}
-\usepackage{comment}
-
-% Colores para las guías (eliminar en versión final)
-\newcommand{\guia}[1]{\textcolor{blue}{\textit{[#1]}}}
 
 \begin{document}
 
 % ============================================================
-% Título y Autores
+% Titulo y Autores
 % ============================================================
 
 \title{Segmentación y clasificación de patologías retinales en imágenes OCT mediante Deep Learning}
@@ -36,7 +31,7 @@
 \IEEEauthorblockN{Alexis Barniquez - alexisbarnique@gmail.com,}
 
 \and
-\IEEEauthorblockN{Bárbara Cerezo - cerezo.barbara@gmail.com,}
+\IEEEauthorblockN{Barbara Cerezo - cerezo.barbara@gmail.com,}
 
 \and
 \IEEEauthorblockN{Daniel Paniagua - dgpaniagua1989@gmail.com,}
@@ -54,362 +49,243 @@
 % ============================================================
 % Abstract
 % ============================================================
-\begin{comment}
+
 \begin{abstract}
-\guia{Escribir al final, cuando el paper esté completo. 150-200 palabras máximo.}
- 
-La tomografía de coherencia óptica (OCT) es una técnica de imagen no invasiva ampliamente utilizada para el diagnóstico de enfermedades retinales. En este trabajo se investiga si la incorporación de información explícita de segmentación de capas retinales mejora la clasificación automática de patologías en imágenes OCT. Se proponen cuatro experimentos: (1) segmentación de capas retinales mediante U-Net++ con encoder EfficientNet-B0, (2) clasificación directa sobre imágenes sin procesar, (3) clasificación enriquecida con máscaras de segmentación como canales adicionales, y (4) un estudio de ablación para determinar la contribución individual de cada capa retinal a la tarea de clasificación. Los experimentos se realizan sobre el dataset de Kermany et al. con cuatro clases diagnósticas: CNV, DME, Drusen y Normal. Los resultados muestran que \guia{completar con hallazgos principales}. El análisis de ablación revela que \guia{completar con capas más relevantes y su correlación clínica}.
+La tomografía de coherencia óptica (OCT) es el estándar de imagen para el diagnóstico de enfermedades retinales como la neovascularización coroidal (CNV), el edema macular diabético (DME) y las drusas. En este trabajo se evalúa si la segmentación semántica de capas retinales como preprocesamiento mejora la clasificación automática de patologías en imágenes OCT. Se entrenó un modelo UNet++ con encoder ResNet34 para segmentar 8 capas retinales, obteniendo un coeficiente Dice de 0.98 y un IoU de 0.96. Sobre el dataset de Kermany et al. (2018) se entrenaron dos clasificadores ResNet50 idénticos: uno sobre imágenes originales y otro sobre las máscaras de segmentación generadas. El clasificador sobre imágenes originales alcanzó un accuracy de 94\%, mientras que el clasificador sobre máscaras obtuvo 70\%. Los resultados indican que la información de textura y contraste presente en las imagenes originales es mas discriminativa para la clasificacion de patologias retinales que la informacion puramente estructural de las mascaras de segmentación. Adicionalmente, se desarrolló una aplicación web interactiva con Streamlit que integra ambos enfoques como prototipo de sistema de apoyo al diagnóstico.
 \end{abstract}
 
 \begin{IEEEkeywords}
-OCT, segmentación semántica, clasificación de imágenes médicas, deep learning, retina, ablation study.
-\end{IEEEkeywords}
-\end{comment}
-
-\begin{abstract}
-Las enfermedades retinales (CNV, DME, Drusen) son causas principales de pérdida visual; la OCT es el estándar de diagnóstico por imagen. En este trabajo se evalúa si la segmentación semántica de capas retinales como preprocesamiento mejora la clasificación automática de patologías en imágenes OCT. Para ello se entrenó un modelo UNet++ (ResNet34) para segmentación de 8 capas retinales, y dos clasificadores ResNet50: uno sobre imágenes originales y otro sobre las máscaras de segmentación generadas. El modelo de segmentación alcanzó un Dice de 0.84 (5-fold CV). El clasificador sobre imágenes originales logró 94\% de accuracy, mientras que el clasificador sobre máscaras de segmentación alcanzó 70\%. Este hallazgo nos indica que la información de textura y contraste de las imágenes originales resulta más discriminativa para la clasificación de patologías que la información puramente estructural de las máscaras de segmentación.
-\end{abstract}
-
-\begin{IEEEkeywords}
-OCT, segmentación semántica, clasificación de imágenes médicas, deep learning, retina.
+OCT, segmentación semántica, clasificación de imágenes médicas, deep learning, retina, UNet++, ResNet50.
 \end{IEEEkeywords}
 
 % ============================================================
-% I. INTRODUCCIÓN
+% I. INTRODUCCION
 % ============================================================
 
 \section{Introducción}
-La tomografía de coherencia óptica (OCT, por sus siglas en inglés) es una modalidad de imagen no invasiva que permite obtener cortes transversales de alta resolución de la retina. Esta técnica se ha convertido en una herramienta fundamental para el diagnóstico y seguimiento de diversas patologías oculares, incluyendo la neovascularización coroidal (CNV), el edema macular diabético (DME) y las drusas \cite{kermany2018}.
- 
-La interpretación manual de OCT requiere especialistas, es subjetiva y consume tiempo. Esto impulsa la necesidad de automatización con deep learning.
- 
-En los últimos años, las redes neuronales convolucionales han demostrado un desempeño notable en la clasificación automática de imágenes OCT \cite{kermany2018}. Sin embargo, la mayoría de los enfoques tratan la imagen como una entrada opaca, sin considerar explícitamente la estructura anatómica de la retina. La retina está compuesta por múltiples capas diferenciadas, y distintas patologías afectan capas específicas: por ejemplo, las drusas se acumulan entre el epitelio pigmentario retinal (RPE) y la membrana de Bruch, mientras que el DME se manifiesta como engrosamiento en las capas internas \cite{huang1991}.
 
-¿La segmentación semántica de capas retinales como paso previo mejora la clasificación de patologías en OCT?. Las contribuciones principales de este trabajo son:
+La tomografía de coherencia óptica (OCT) es una modalidad de imagen no invasiva que permite obtener cortes transversales de alta resolución de la retina. Esta técnica se ha convertido en una herramienta fundamental para el diagnóstico y seguimiento de diversas patologías oculares, incluyendo la neovascularización coroidal (CNV), el edema macular diabético (DME) y las drusas \cite{kermany2018}. La interpretación manual de estas imágenes requiere especialistas altamente entrenados, es subjetiva y consume tiempo significativo, lo que impulsa la necesidad de herramientas automatizadas basadas en deep learning.
+
+En los últimos años, las redes neuronales convolucionales han demostrado un desempeño notable en la clasificación automática de imágenes OCT. El trabajo seminal de Kermany et al. \cite{kermany2018} demostró que una red profunda puede clasificar imágenes OCT en cuatro categorías de diagnóstico con rendimiento comparable a expertos clínicos, utilizando transfer learning con InceptionV3. Posteriormente, De Fauw et al. \cite{defauw2018} presentaron un sistema de dos etapas desarrollado por DeepMind en colaboración con Moorfields Eye Hospital, donde primero se segmentan las estructuras retinales y luego se clasifica la patología, obteniendo resultados clínicamente aplicables en un espectro mas amplio de enfermedades.
+
+Sin embargo, la mayoría de los enfoques de clasificación tratan la imagen OCT como una entrada opaca, sin considerar explícitamente la estructura anatómica de la retina. La retina esta compuesta por multiples capas diferenciadas, y distintas patologías afectan capas específicas: las drusas se acumulan entre el epitelio pigmentario retinal (RPE) y la membrana de Bruch, mientras que el DME se manifiesta como engrosamiento en las capas internas \cite{huang1991}. Esta observación motiva la pregunta central de este trabajo: ?`la segmentación semántica de capas retinales como paso previo, mejora la clasificación de patologías en OCT?
+
+Las contribuciones principales de este trabajo son: 
 \begin{enumerate}
-    \item Un modelo de segmentación semántica de capas retinales basado en U-Net++ con validación cruzada de 5 pliegues.
-    \item Un modelo clasificador 1 usando resnet
-    \item Un estudio de ablación que identifica qué capas retinales aportan mayor información discriminativa para cada patología.
+	\item Un modelo de segmentación semántica de 8 capas retinales basado en UNet++ con Dice de 0.98.
+	\item Una comparación controlada entre un clasificador sobre imágenes originales y otro sobre mascaras de segmentación, aislando el efecto de la variable de entrada.
+	\item Una aplicación web interactiva que integra ambos enfoques como prototipo funcional de apoyo al diagnóstico.
 \end{enumerate}
 
 % ============================================================
-% II. TRABAJOS RELACIONADOS
-% ============================================================
-
-\section{Trabajos relacionados}
-
-\subsection{Clasificación de imágenes OCT}
- 
-El trabajo seminal de Kermany et al. \cite{kermany2018} demostró que las redes convolucionales profundas pueden clasificar imágenes OCT en cuatro categorías diagnósticas con alta precisión, utilizando transfer learning con arquitecturas como InceptionV3 y ResNet.
- 
-\guia{Citar 2-3 trabajos más recientes de clasificación de OCT. Mencionar EfficientNet, Vision Transformers si aplica.}
-
- 
-\subsection{Segmentación de capas retinales}
- 
-La segmentación automática de capas retinales ha sido abordada mediante diversas arquitecturas, desde métodos basados en grafos hasta enfoques de deep learning como U-Net y sus variantes \cite{ronneberger2015}.
- 
-\guia{Citar trabajos de segmentación de capas retinales con deep learning. Mencionar U-Net++, segmentation\_models\_pytorch.}
- 
-\subsection{Integración de segmentación y clasificación}
- 
-\guia{Revisar si existen trabajos que combinen ambas tareas para OCT. Este es el gap que justifica el paper. Si hay pocos trabajos, resaltar que la comparación rigurosa es escasa.}
-
-\begin{itemize}
-    \item \textbf{Sin segmentación:} The baseline scenario where the model is trained solely on raw images from the Kaggle OCT dataset\cite{wu2023medical}.
-    \item \textbf{Con segmentación:} The experimental scenario where the model is trained on images enriched with the anatomical masks generated in the previous stage. This enrichment acts as an attention mechanism, constraining the feature extraction to the most relevant areas.
-\end{itemize}
-
-\begin{figure}[htbp]
-    \centering
-    % Placeholder for the pipeline diagram
-    \includegraphics[width=\linewidth]{example-image-a}
-    \caption{Architecture of the proposed Segmentation-Aware Pipeline, detailing the RetinaSAM-Adapter flow and the dual-scenario classification.}
-    \label{fig:pipeline}
-\end{figure}
-
-
-\subsection{Comparison and Evaluation}
-The final component of the methodology is to systematically evaluate the impact of the segmentation on the classification of the pathologies\cite{wu2023medical}. By analyzing the delta in performance metrics between the two scenarios, we can quantify the value of explicit anatomical guidance.
-
-
-% ============================================================
-% III. METODOLOGÍA
+% II. METODOLOGÍA
 % ============================================================
 \section{Metodología}
 
-\subsection{Dataset}
-Se utiliza el dataset público de imágenes OCT retinales de Kermany et al. \cite{kermany2018}, que contiene imágenes de cuatro categorías diagnósticas: neovascularización coroidal (CNV), edema macular diabético (DME), drusas (DRUSEN) y retinas normales (NORMAL).
- 
-\guia{Completar con: número total de imágenes por clase, resolución original, fuente del dataset (Kaggle), y si se usa algún subset específico. Agregar tabla con distribución del dataset.}
+\subsection{Datasets}
+
+Se utilizan dos datasets públicos complementarios:
+
+\textbf{Dataset de segmentación:} se emplea el Retinal Layer Segmentation Dataset disponible en Kaggle, que contiene 220 imágenes OCT en formato \texttt{.npy} con resolución de $216 \times 500$ píxeles en escala de grises, acompañadas de máscaras de segmentación píxel a píxel para 8 capas retinales: ILM-RNFL, RNFL-GCL, GCL-IPL, IPL-INL, INL-OPL, OPL-ONL, ONL-IS e IS-OS.
+
+\textbf{Dataset de clasificación:} se utiliza el dataset público de Kermany et al. \cite{kermany2018} con cuatro categorías de diagnóstico. La distribución se detalla en la Tabla~\ref{tab:dataset}.
 
 \begin{table}[h]
-\caption{Distribución del dataset por clase diagnóstica}
+\caption{distribución del dataset de clasificación por clase.}
 \label{tab:dataset}
 \centering
 \begin{tabular}{lrrr}
 \toprule
 \textbf{Clase} & \textbf{Train} & \textbf{Val} & \textbf{Test} \\
 \midrule
-CNV    & \guia{N} & \guia{N} & \guia{N} \\
-DME    & \guia{N} & \guia{N} & \guia{N} \\
-DRUSEN & \guia{N} & \guia{N} & \guia{N} \\
-NORMAL & \guia{N} & \guia{N} & \guia{N} \\
+CNV    & 1\,041 & 508 & 990 \\
+DME    & 990 & 508 & 1\,002 \\
+DRUSEN & 979 & 508 & 1\,021 \\
+NORMAL & 990 & 508 & 1\,002 \\
 \midrule
-\textbf{Total} & \guia{N} & \guia{N} & \guia{N} \\
+\textbf{Total} & 4\,000 & 2\,032 & 4\,015 \\
 \bottomrule
 \end{tabular}
 \end{table}
- 
-Las imágenes se redimensionan a $256 \times 256$ píxeles para la tarea de segmentación y a $224 \times 224$ para clasificación. Se aplica normalización con media y desviación estándar de ImageNet para los modelos con pesos preentrenados.
 
+Para el entrenamiento de los clasificadores se utilizan 4\,000 imágenes seleccionadas mediante \texttt{WeightedRandomSampler} del conjunto original de 8\,003 imágenes, compensando el desbalance entre clases.
 
-\subsection{Modelo de segmentación (Experimento 1)}
- 
-Para la segmentación semántica de capas retinales se emplea una arquitectura U-Net++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder EfficientNet-B0 \cite{tan2019} preentrenado en ImageNet.
- 
-El modelo recibe imágenes de un solo canal (escala de grises) y produce una salida de 9 canales correspondientes a las siguientes estructuras retinales: ILM-RNFL, RNFL-GCL, GCL-INL, INL-OPL, OPL-ONL, ONL-IS, IS-RPE, RPE-BM, más una clase de fondo.
- 
-\guia{Describir la función de pérdida (Dice + Cross-Entropy), el optimizador (Adam, lr), scheduler (cosine annealing), early stopping, y la estrategia de validación cruzada (5-fold).}
- 
-La función de pérdida combina Dice Loss y Cross-Entropy:
-\begin{equation}
-\mathcal{L} = \mathcal{L}_{\text{Dice}} + \mathcal{L}_{\text{CE}}
-\end{equation}
- 
-donde el Dice Loss se define como:
-\begin{equation}
-\mathcal{L}_{\text{Dice}} = 1 - \frac{2 \sum_{i} p_i g_i + \epsilon}{\sum_{i} p_i + \sum_{i} g_i + \epsilon}
-\end{equation}
- 
-siendo $p_i$ la predicción y $g_i$ el ground truth para el píxel $i$.
- 
-Se utiliza validación cruzada de 5 pliegues (\textit{5-fold cross-validation}) para obtener estimaciones robustas del rendimiento del modelo.
- 
-\subsection{Clasificación sobre imágenes crudas (Experimento 2)}
- 
-El segundo experimento consiste en clasificar las imágenes OCT directamente, sin información de segmentación. Se emplea una red EfficientNet-B0 con pesos preentrenados de ImageNet, modificando la primera capa convolucional para aceptar un solo canal de entrada y la capa de clasificación final para producir 4 salidas correspondientes a las clases diagnósticas.
- 
-\guia{Detallar: optimizador, learning rate, scheduler, epochs, data augmentation aplicado, criterio de parada.}
- 
-\subsection{Clasificación con segmentación (Experimento 3)}
- 
-En este experimento, la entrada al clasificador se compone de 10 canales: la imagen OCT original concatenada con las 9 máscaras de segmentación generadas por el modelo del Experimento~1. Formalmente, dado una imagen $I \in \mathbb{R}^{1 \times H \times W}$ y las máscaras de segmentación $S \in \mathbb{R}^{9 \times H \times W}$, la entrada al clasificador es:
- 
-\begin{equation}
-X = [I \| S] \in \mathbb{R}^{10 \times H \times W}
-\end{equation}
- 
-Se utiliza la misma arquitectura EfficientNet-B0, pero con la primera capa convolucional adaptada para recibir 10 canales. Los hiperparámetros de entrenamiento se mantienen idénticos al Experimento~2 para asegurar una comparación justa.
- 
-\subsection{Estudio de ablación por capas (Experimento 4)}
- 
-Para cuantificar la contribución individual de cada capa retinal a la tarea de clasificación, se realiza un estudio de ablación sistemático. Se entrena una serie de modelos variando los canales de segmentación incluidos:
- 
-\begin{itemize}
-    \item \textbf{Leave-one-out}: Se entrenan 9 modelos, cada uno excluyendo una de las capas de segmentación. La caída en rendimiento al excluir una capa indica su importancia relativa.
-    \item \textbf{Add-one-in} \guia{(opcional, si hay tiempo de cómputo)}: Se entrenan modelos agregando capas una a una sobre la imagen cruda, para medir la ganancia marginal de cada capa.
-\end{itemize}
- 
-\guia{Elegir una de las dos estrategias o ambas según recursos disponibles. Leave-one-out es más práctica si el tiempo es limitado.}
+\subsection{Modelo de segmentación}
+
+Para la segmentación semántica de capas retinales se emplea una arquitectura UNet++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder ResNet34 \cite{he2016deep} sin pesos preentrenados (\texttt{encoder\_weights=None}).
+
+Se eligió UNet++ sobre U-Net estándar porque sus conexiones densas anidadas mejoran la captura de detalles finos en las capas retinales, que son estructuras delgadas donde los bordes precisos son críticos para una segmentación correcta. ResNet34 como encoder ofrece un buen balance entre capacidad de reprecentación y costo computacional para imágenes médicas de un solo canal.
+
+El modelo recibe imágenes de un canal (escala de grises) redimensionadas a $224 \times 512$ píxeles y produce una salida de 8 canales correspondientes a las capas retinales. Se utiliza \textit{Cross-Entropy Loss} como función de perdida, optimizador Adam con learning rate de $10^{-3}$, batch size de 8, y entrenamiento por 50 epochs. El dataset se divide en 80\% entrenamiento (176 imágenes) y 20\% validación (44 imágenes).
+
+\subsection{Clasificación sobre imágenes originales (Modelo 1)}
+
+El primer modelo de clasificación emplea una red ResNet50 \cite{he2016deep} con pesos preentrenados de ImageNet (IMAGENET1K\_V2), modificando la capa fully connected final para producir 4 salidas. Las imágenes se redimensionan a $224 \times 224$ pixeles y se normalizan con media y desviación estándar de ImageNet. Se aplica \textit{ColorJitter} como aumentación (brillo y contraste $\pm 0.2$). El entrenamiento utiliza optimizador Adam con learning rate de $10^{-4}$, batch size de 32, \textit{Cross-Entropy Loss}, y early stopping con patience de 5 epochs sobre un máximo de 30 epochs.
+
+\subsection{Clasificación sobre mascaras de segmentación (Modelo 2)}
+
+El segundo clasificador utiliza la misma arquitectura ResNet50 con idéntica configuración de hiperparámetros, pero recibe como entrada las máscaras de segmentación generadas por el modelo UNet++ (cuyos pesos permanecen congelados durante el entrenamiento del clasificador). El pipeline de preprocesamiento consiste en: (1) convertir la imagen OCT a escala de grises, (2) redimensionar a $224 \times 512$, (3) generar la máscara de segmentación con valores de clase 0--7, (4) normalizar la mascara al rango $[0, 1]$ dividiendola por 7, (5) replicar a 3 canales para compatibilidad con ResNet50, y (6) redimensionar a $224 \times 224$ con normalización ImageNet. Se aplican \textit{RandomHorizontalFlip} y \textit{RandomVerticalFlip} como aumentación. El entrenamiento se realiza por un máximo de 20 epochs con early stopping (patience de 5).
+
+Este diseño experimental aísla la variable independiente (tipo de entrada) al mantener la misma arquitectura de clasificación, hiperparámetros y dataset, permitiendo atribuir las diferencias de rendimiento exclusivamente al efecto de la segmentación como preprocesamiento.
 
 % ============================================================
-% IV. RESULTADOS
+% III. RESULTADOS
 % ============================================================
 \section{Resultados}
+
 \subsection{Rendimiento de la segmentación}
- 
-La Tabla~\ref{tab:seg_results} presenta los resultados del modelo U-Net++ evaluado mediante validación cruzada de 5 pliegues.
- 
+
+La Tabla~\ref{tab:seg_results} presenta las métricas globales del modelo de segmentación, y la Tabla~\ref{tab:seg_per_class} detalla el rendimiento por capa retinal.
+
 \begin{table}[h]
-\caption{Resultados de segmentación -- Promedios de 5-fold CV}
+\caption{métricas globales de segmentación (UNet++ con ResNet34)}
 \label{tab:seg_results}
-\centering
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Fold} & \textbf{Dice} & \textbf{IoU} & \textbf{F1} & \textbf{HD (px)} \\
-\midrule
-1 & 0.8449 & 0.8061 & 0.8449 & -- \\
-2 & 0.8440 & 0.8045 & 0.8440 & -- \\
-3 & 0.8437 & 0.8040 & 0.8437 & -- \\
-4 & 0.8418 & 0.8005 & 0.8418 & -- \\
-5 & 0.8368 & 0.7921 & 0.8368 & -- \\
-\midrule
-\textbf{Prom.} & \textbf{0.8439} & \textbf{0.8043} & \textbf{0.8439} & \textbf{3.36} \\
-\bottomrule
-\end{tabular}
-\end{table}
- 
-\begin{table}[h]
-\caption{Rendimiento de segmentación por capa retinal (mejor fold)}
-\label{tab:seg_per_class}
 \centering
 \begin{tabular}{lccc}
 \toprule
-\textbf{Capa} & \textbf{Dice} & \textbf{IoU} & \textbf{F1} \\
+\textbf{Metrica} & \textbf{Valor} \\
 \midrule
-Fondo       & 0.9961 & 0.9921 & 0.9961 \\
-ILM-RNFL    & 0.9476 & 0.9004 & 0.9476 \\
-RNFL-GCL    & 0.9642 & 0.9308 & 0.9642 \\
-GCL-INL     & 0.9225 & 0.8562 & 0.9225 \\
-INL-OPL     & 0.9103 & 0.8353 & 0.9103 \\
-OPL-ONL     & 0.9736 & 0.9486 & 0.9736 \\
-ONL-IS      & 0.9459 & 0.8974 & 0.9459 \\
-IS-RPE      & 0.9348 & 0.8775 & 0.9348 \\
+Dice (macro)           & 0.9814 \\
+IoU (macro)            & 0.9637 \\
+Hausdorff Distance (px) & 1.5303 \\
+Val Loss (mejor)       & 0.0181 \\
 \bottomrule
 \end{tabular}
 \end{table}
- 
-\guia{Agregar una figura con ejemplos visuales de segmentación (imagen original, ground truth, predicción). Usar 2-3 ejemplos representativos, uno por patología.}
- 
-%\begin{figure}[h]
-%\centering
-%\includegraphics[width=\columnwidth]{figures/segmentation_examples.png}
-%\caption{Ejemplos de segmentación de capas retinales. De izquierda a derecha: imagen OCT original, ground truth, predicción del modelo U-Net++.}
-%\label{fig:seg_examples}
-%\end{figure}
- 
-\subsection{Comparación de clasificación}
- 
-La Tabla~\ref{tab:classification} presenta la comparación entre la clasificación sobre imágenes crudas (Exp.~2) y la clasificación enriquecida con segmentación (Exp.~3).
- 
+
 \begin{table}[h]
-\caption{Comparación de clasificación: imágenes crudas vs. segmentación}
+\caption{rendimiento de segmentación por capa retinal}
+\label{tab:seg_per_class}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Capa} & \textbf{Dice} & \textbf{IoU} & \textbf{HD (px)} \\
+\midrule
+ILM-RNFL  & 0.9988 & 0.9976 & 1.11 \\
+RNFL-GCL  & 0.9795 & 0.9599 & 1.23 \\
+GCL-IPL   & 0.9886 & 0.9775 & 1.63 \\
+IPL-INL   & 0.9704 & 0.9425 & 1.84 \\
+INL-OPL   & 0.9669 & 0.9360 & 2.15 \\
+OPL-ONL   & 0.9901 & 0.9804 & 1.99 \\
+ONL-IS    & 0.9781 & 0.9572 & 1.16 \\
+IS-OS     & 0.9789 & 0.9587 & 1.13 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El modelo alcanza un Dice macro de 0.98, con todas las capas superando un Dice de 0.96. La capa con menor rendimiento es INL-OPL (Dice = 0.967), consistente con ser una de las capas más delgadas y difíciles de delinear. La convergencia del entrenamiento fue estable, con la loss de validación descendiendo de 0.57 (epoch 1) a 0.02 (epoch 50).
+
+\subsection{Comparación de clasificación}
+
+La Tabla~\ref{tab:classification} presenta la comparación global entre ambos clasificadores, y la Tabla~\ref{tab:f1_per_class} detalla el F1-score por clase.
+
+\begin{table}[h]
+\caption{comparación de clasificadores sobre el set de test (4\,015 imágenes)}
 \label{tab:classification}
 \centering
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Método} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Recall} & \textbf{F1} \\
+\textbf{Modelo} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Recall} & \textbf{F1} \\
 \midrule
-Raw (Exp. 2)     & \guia{--} & \guia{--} & \guia{--} & \guia{--} \\
-Seg-Aware (Exp. 3) & \guia{--} & \guia{--} & \guia{--} & \guia{--} \\
+Modelo 1 (imágenes)     & \textbf{0.94} & \textbf{0.94} & \textbf{0.94} & \textbf{0.94} \\
+Modelo 2 (segmentación) & 0.70 & 0.71 & 0.71 & 0.70 \\
 \bottomrule
 \end{tabular}
 \end{table}
- 
-\guia{Completar con resultados reales. Incluir matrices de confusión como figura si el espacio lo permite.}
- 
-\guia{Agregar tabla de F1-score por clase para ambos métodos:}
- 
+
 \begin{table}[h]
-\caption{F1-score por clase diagnóstica}
+\caption{F1-score por clase de diagnóstico}
 \label{tab:f1_per_class}
 \centering
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-\textbf{Clase} & \textbf{Raw} & \textbf{Seg-Aware} \\
+\textbf{Clase} & \textbf{Modelo 1} & \textbf{Modelo 2} & \textbf{$\Delta$ F1} \\
 \midrule
-CNV    & \guia{--} & \guia{--} \\
-DME    & \guia{--} & \guia{--} \\
-DRUSEN & \guia{--} & \guia{--} \\
-NORMAL & \guia{--} & \guia{--} \\
+CNV    & 0.95 & 0.81 & $-0.14$ \\
+DME    & 0.94 & 0.76 & $-0.18$ \\
+DRUSEN & 0.92 & 0.59 & $-0.33$ \\
+NORMAL & 0.94 & 0.66 & $-0.28$ \\
 \midrule
-\textbf{Macro Avg.} & \guia{--} & \guia{--} \\
+\textbf{Macro Avg.} & \textbf{0.94} & 0.70 & $-0.24$ \\
 \bottomrule
 \end{tabular}
 \end{table}
- 
 
-\begin{figure}[htbp]
-    \centering
-    % Placeholder matriz de confusión
-    \includegraphics[width=\linewidth]{example-image-b}
-    \caption{matriz de confusión.}
-    \label{fig:curves}
-\end{figure}
+El Modelo 1 (imágenes originales) supera al Modelo 2 (máscaras de segmentación) por 24 puntos porcentuales de accuracy. El early stopping detuvo el Modelo 1 en el epoch 7 (mejor val loss: 0.307, val accuracy: 0.922) y el Modelo 2 en el epoch 10 (mejor val loss: 0.822, val accuracy: 0.703), indicando que el Modelo 2 tuvo mayor dificultad para converger.
 
+\subsection{Análisis por clase}
 
-\subsection{Estudio de ablación}
- 
-\guia{Esta es la sección más importante y novedosa. Presentar los resultados del leave-one-out.}
- 
-La Tabla~\ref{tab:ablation} muestra el impacto de remover cada capa retinal individualmente sobre el rendimiento de clasificación.
- 
-\begin{table}[h]
-\caption{Estudio de ablación: impacto de remover cada capa retinal sobre la accuracy de clasificación}
-\label{tab:ablation}
-\centering
-\begin{tabular}{lcc}
-\toprule
-\textbf{Capa removida} & \textbf{Accuracy} & \textbf{$\Delta$ Acc.} \\
-\midrule
-Ninguna (Seg-Aware completo) & \guia{--} & -- \\
-\midrule
-Sin ILM-RNFL  & \guia{--} & \guia{--} \\
-Sin RNFL-GCL  & \guia{--} & \guia{--} \\
-Sin GCL-INL   & \guia{--} & \guia{--} \\
-Sin INL-OPL   & \guia{--} & \guia{--} \\
-Sin OPL-ONL   & \guia{--} & \guia{--} \\
-Sin ONL-IS    & \guia{--} & \guia{--} \\
-Sin IS-RPE    & \guia{--} & \guia{--} \\
-Sin RPE-BM    & \guia{--} & \guia{--} \\
-Sin Fondo     & \guia{--} & \guia{--} \\
-\bottomrule
-\end{tabular}
-\end{table}
- 
-\guia{Agregar un gráfico de barras horizontal mostrando el delta de accuracy para cada capa. Facilita la lectura visual.}
- 
-%\begin{figure}[h]
-%\centering
-%\includegraphics[width=\columnwidth]{figures/ablation_chart.png}
-%\caption{Caída en accuracy al remover cada capa retinal del clasificador Seg-Aware. Valores más negativos indican mayor importancia de la capa.}
-%\label{fig:ablation}
-%\end{figure}
+La clase mas afectada por el uso de máscaras de segmentación es DRUSEN, cuyo F1-score cae de 0.92 a 0.59 ($\Delta = -0.33$). Esto es clínicamente coherente: las drusas son depósitos sub-retinales cuya detección depende de características de textura e intensidad visual que se pierden completamente al reducir la imagen a etiquetas discretas de clase. En contraste, CNV es la clase menos afectada ($\Delta = -0.14$), posiblemente porque la neovascularización produce cambios estructurales mas pronunciados que se preservan parcialmente en la máscara.
 
+El Modelo 2 muestra confusión significativa entre DRUSEN y NORMAL (las clases con mayor caída de rendimiento), lo cual sugiere que sin la información de textura, el clasificador no puede distinguir depósitos sub-retinales sutiles de una retina sana.
 
-\section{Applicación web - demo}
-Para demostrar la utilidad práctica de nuestra investigación, desarrollamos una aplicación web\cite{wu2023medical}. La aplicación incluye:
+% ============================================================
+% IV. DISCUSIÓN
+% ============================================================
+\section{Discusión}
+
+\subsection{Perdida de información discriminativa}
+
+El hallazgo principal de este trabajo es que la segmentación como preprocesamiento \textit{degrada} significativamente la clasificación, en lugar de mejorarla. La explicación mas plausible es que la conversion de una imagen OCT continua a una mascara de segmentación discreta (con valores 0--7) descarta información de textura, intensidad y contraste que resulta fundamental para distinguir patologías. Las imágenes originales contienen patrones sutiles de reflectividad, sombras y microestructuras que un clasificador entrenado sobre imágenes crudas puede explotar, pero que se eliminan al reducir la imagen a etiquetas de capa.
+
+\subsection{Discrepancia de dominios}
+
+Un factor que probablemente amplifica la degradación es la discrepancia entre los datasets de segmentación y clasificación. El modelo de segmentación fue entrenado con el Retinal Layer Segmentation Dataset de Kaggle, mientras que la clasificación se realiza sobre el dataset de Kermany et al. Las diferencias en equipos OCT, resolución, y condiciones de adquisición pueden generar máscaras de segmentación subóptimas al aplicarse al segundo dataset, propagando errores al clasificador.
+
+\subsection{Calidad de la segmentación vs. utilidad para clasificación}
+
+Es importante destacar que el modelo de segmentación por si mismo alcanza un rendimiento excelente (Dice = 0.98, IoU = 0.96). El problema no radica en la calidad de la segmentación, sino en que la información estructural pura no es suficiente para clasificar patologías. Este resultado sugiere que la segmentación y la clasificación capturan aspectos complementarios de la imagen: la primera identifica \textit{dónde} están las capas, mientras que la segunda necesita saber \textit{cómo se ven} (textura, opacidad, depósitos).
+
+\subsection{Limitaciones}
+
+Este trabajo presenta las siguientes limitaciones: 
 \begin{enumerate}
-    \item Segmentación interactiva de capas, lo que permite a los usuarios visualizar los resultados del RetinaSAM-Adapter en tiempo real.
-    \item Clasificación de patologías operando en los dos escenarios definidos (con y sin segmentación).
-    \item Un panel comparativo visual y numérico que resalta las discrepancias y las mejoras obtenidas por el enfoque basado en la segmentación.
+	\item Se utilizó un único backbone de clasificación (ResNet50); explorar Vision Transformers u otras arquitecturas podría arrojar resultados diferentes.
+	\item La estrategia de alimentar máscaras como única entrada es una de multiples formas posibles de integrar la segmentación, alternativas como concatenar la máscara con la imagen original o usar attention maps podrían ser mas efectivas.
+	\item El dataset de segmentación es relativamente pequeño (220 imágenes).
+	\item los resultados son específicos al dominio de OCT retinal y no necesariamente generalizables a otros tipos de imagen médica.
 \end{enumerate}
 
+% ============================================================
+% V. APLICACION WEB
+% ============================================================
+\section{Aplicacion web}
+
+Para demostrar la utilidad practica de la investigación, se desarrolló una aplicación web con Streamlit que integra los tres modelos entrenados (segmentación UNet++ y ambos clasificadores ResNet50). La aplicación permite al usuario cargar imágenes OCT y obtener: (1) la segmentación interactiva de las 8 capas retinales con overlay sobre la imagen original, (2) la prediccion simultanea de ambos clasificadores con barras de probabilidad por clase, y (3) una vista comparativa que facilita la interpretación de los resultados. La Figura~\ref{fig:webapp} muestra una captura de la interfaz.
+
 \begin{figure}[htbp]
     \centering
-    % Placeholder for the Web App UI
     \includegraphics[width=\linewidth]{captura-demo.png}
-    \caption{Captura de pantalla de la demo web}
+    \caption{captura de pantalla de la aplicación web de demostración desarrollada con Streamlit.}
     \label{fig:webapp}
 \end{figure}
 
 % ============================================================
-% V. DISCUSIÓN
+% VI. CONCLUSIONES
 % ============================================================
-\section{Discusión}
- 
-\guia{Estructurar la discusión en torno a estas preguntas:}
- 
-\guia{1. ¿La segmentación mejoró la clasificación? ¿Por cuánto margen? ¿Fue estadísticamente significativo?}
- 
-\guia{2. ¿Qué capas retinales resultaron más informativas? ¿Coincide con el conocimiento clínico? Por ejemplo:
-- RPE importante para Drusen (las drusas se depositan sobre RPE)
-- Capas internas (NFL, GCL) importantes para DME (edema afecta capas internas)
-- IS/OS y RPE relevantes para CNV (neovascularización sub-RPE)}
- 
-\guia{3. ¿El costo computacional adicional de la segmentación se justifica con la ganancia en clasificación?}
- 
-\guia{4. Limitaciones:
-- Dataset específico (Kermany), generalización a otros datasets pendiente
-- Un solo backbone (EfficientNet-B0)
-- Segmentación no perfecta (84\% Dice) -- errores se propagan al clasificador
-- Resolución fija de 256x256}
- 
-% ============================================================
-% VI. CONCLUSIÓN
-% ============================================================
-\section{Conclusión}
-\guia{Resumen conciso de los hallazgos principales (3-4 oraciones). Incluir:}
- 
-En este trabajo se investigó si la segmentación explícita de capas retinales mejora la clasificación automática de enfermedades en imágenes OCT. Se compararon cuatro enfoques experimentales sobre el dataset de Kermany.
- 
-\guia{Completar con: resultado principal (mejora o no), capas más importantes del ablation, implicación clínica.}
- 
-Como trabajo futuro se propone \guia{evaluar con otros backbones (ResNet, Vision Transformers), explorar estrategias de ensemble entre los clasificadores raw y seg-aware, y validar en datasets adicionales de OCT}.
-\cite{wu2023medical}.
+\section{Conclusiones}
+
+En este trabajo se investigó si la segmentación explicita de capas retinales mejora la clasificación automática de patologías en imágenes OCT. Los resultados permiten extraer las siguientes conclusiones:
+
+\begin{enumerate}
+    \item El clasificador sobre imágenes OCT originales (94\% accuracy) supera significativamente al pipeline con segmentación previa (70\%), refutando la hipótesis de que la segmentación mejoraría la clasificación.
+
+    \item La información de textura y contraste contenida en las imágenes crudas es mas discriminativa para la clasificación de patologías retinales que la información puramente geométrica de las máscaras de segmentación.
+
+    \item El modelo UNet++ con encoder ResNet34 logra una segmentación precisa de capas retinales (Dice = 0.98, IoU = 0.96), validando su utilidad como herramienta independiente para análisis estructural retinal.
+
+    \item La clase DRUSEN es la mas sensible a la perdida de información visual (F1 cae de 0.92 a 0.59), lo cual es coherente con la naturaleza de esta patología, que se manifiesta como depósitos cuya detección depende de patrones de textura e intensidad.
+
+    \item La discrepancia entre los dominios de los datasets de segmentación y clasificación es un factor que probablemente contribuye a la degradación del rendimiento del pipeline combinado.
+
+    \item La segmentación semántica, aunque no mejora la clasificación como preprocesamiento, aporta valor clínico como herramienta de interpretabilidad, permitiendo al oftalmólogo visualizar las estructuras retinales junto con el diagnostico automatizado.
+
+    \item Se desarrollo una aplicación web interactiva que integra ambos enfoques, demostrando la factibilidad de un sistema de apoyo al diagnóstico oftalmológico basado en deep learning.
+\end{enumerate}
+
+Como trabajo futuro se propone explorar estrategias alternativas de integración, como la concatenación de la máscara con la imagen original como canales adicionales, el uso de mecanismos de atención guiados por la segmentación, o la evaluación con otras arquitecturas como Vision Transformers.
 
 \bibliographystyle{IEEEtran}
- \bibliography{references}
+\bibliography{references}
 
 \end{document}

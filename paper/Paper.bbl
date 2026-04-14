@@ -27,22 +27,17 @@ D.~S. Kermany, M.~Goldbaum, W.~Cai, C.~C. Valentim, H.~Liang, S.~L. Baxter,
   diagnoses and treatable diseases by image-based deep learning,'' \emph{Cell},
   vol. 172, no.~5, pp. 1122--1131, 2018.
 
+\bibitem{defauw2018}
+J.~De~Fauw, J.~R. Ledsam, B.~Romera-Paredes, S.~Nikolov, N.~Tomasev,
+  S.~Blackwell, H.~Askham, X.~Glorot, B.~O'Donoghue, D.~Visber \emph{et~al.},
+  ``Clinically applicable deep learning for diagnosis and referral in retinal
+  disease,'' \emph{Nature Medicine}, vol.~24, no.~9, pp. 1342--1350, 2018.
+
 \bibitem{huang1991}
 D.~Huang, E.~A. Swanson, C.~P. Lin, J.~S. Schuman, W.~G. Stinson, W.~Chang,
   M.~R. Hee, T.~Flotte, K.~Gregory, C.~A. Puliafito, and J.~G. Fujimoto,
   ``Optical coherence tomography,'' \emph{Science}, vol. 254, no. 5035, pp.
   1178--1181, 1991.
-
-\bibitem{ronneberger2015}
-O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for
-  biomedical image segmentation,'' in \emph{International Conference on Medical
-  Image Computing and Computer-Assisted Intervention (MICCAI)}, 2015, pp.
-  234--241.
-
-\bibitem{wu2023medical}
-J.~Wu, R.~Fu, H.~Fang, Y.~Liu, Z.~Wang, Y.~Xu, Y.~Jin, and T.~Arbel, ``Medical
-  sam adapter: Adapting segment anything model for medical image
-  segmentation,'' \emph{arXiv preprint arXiv:2304.12620}, 2023.
 
 \bibitem{zhou2018}
 Z.~Zhou, M.~M. Rahman~Siddiquee, N.~Tajbakhsh, and J.~Liang, ``U-net++: A
@@ -58,9 +53,9 @@ P.~Yakubovskiy, ``Segmentation models pytorch,'' GitHub repository, 2020.
   \url{https://github.com/qubvel/segmentation_models.pytorch}
 \BIBentrySTDinterwordspacing
 
-\bibitem{tan2019}
-M.~Tan and Q.~V. Le, ``Efficientnet: Rethinking model scaling for convolutional
-  neural networks,'' in \emph{International Conference on Machine Learning
-  (ICML)}, 2019, pp. 6105--6114.
+\bibitem{he2016deep}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
+  recognition,'' in \emph{Proceedings of the IEEE conference on computer vision
+  and pattern recognition}, 2016, pp. 770--778.
 
 \end{thebibliography}
