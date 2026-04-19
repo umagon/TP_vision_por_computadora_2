@@ -26,22 +26,9 @@ retina-oct-demo-app/
     └── modelo3_raw_seg_resnet50.pth
 ```
 
-## Instalación
-
-```bash
-pip install -r requirements.txt
-```
-
 ## Uso
 
-1. Coloca los pesos `.pth` entrenados en la carpeta `weights/`.
-2. Ejecuta la app:
-
-```bash
-streamlit run app.py
-```
-
-3. Navega entre las secciones:
+1. Navega entre las secciones:
    - **Segmentación**: sube una imagen OCT y visualiza las 7 capas retinianas segmentadas con UNet++.
    - **Clasificación**: obtén predicciones en los 3 escenarios (raw, seg, hybrid).
    - **Comparativa**: visualiza diferencias entre los escenarios con métricas reales.
@@ -61,7 +48,7 @@ UNet++ con encoder ResNet34 (segmentation_models_pytorch). Entrada: imagen en es
 
 Todos usan ResNet50 con pesos preentrenados IMAGENET1K_V2.
 
-## Pesos Esperados
+## Pesos
 
 | Archivo | Descripción |
 |---------|------------|
