@@ -42,6 +42,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.set_option('client.showErrorDetails', False)  # Ocultar detalles de errores en la interfaz
+
 # ─────────────────────────────────────────────
 # CSS personalizado
 # ─────────────────────────────────────────────
