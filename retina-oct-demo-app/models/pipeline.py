@@ -67,10 +67,9 @@ def preprocess_mask_for_classifier(mask: np.ndarray) -> torch.Tensor:
     Preprocesa la máscara de segmentación como imagen RGB coloreada
     para el Modelo 2 (clasificación sobre máscara).
     """
-    mask_rgb = mask_to_rgb(mask)
-    mask_rgb = mask_rgb.resize((224, 224), Image.NEAREST)
-    arr = np.array(mask_rgb, dtype=np.float32) / 255.0
-    arr = np.transpose(arr, (2, 0, 1))  # [H,W,C] → [C,H,W]
+    mask_rgb = Image.fromarray(mask.astype(np.uint8)).resize((224, 224), Image.NEAREST)
+    arr = np.array(mask_rgb, dtype=np.float32) / 7.0
+    arr = np.stack([arr, arr, arr], axis=0)  # [3,H,W]
     tensor = torch.from_numpy(arr).unsqueeze(0)  # [1,3,224,224]
     return tensor.to(DEVICE)
 
@@ -119,7 +118,7 @@ def run_segmentation(
     with torch.no_grad():
         logits = model(x)                       # [1, 8, 224, 512]
         probs = torch.softmax(logits, dim=1)
-        mask = torch.argmax(probs, dim=1)       # [1, 224, 512]
+        mask = torch.argmax(logits, dim=1)       # [1, 224, 512]
 
     mask_onehot = masks_to_onehot(mask, NUM_SEG_CLASSES)
 

@@ -15,6 +15,12 @@
 
 `uv sync`
 
+Para descargar los pesos de los modelos, que también se encuentran en el repositorio, es preciso correr el siguiente comando:
+
+`git lfs pull`
+
+Para correr este comando es necesario instalar `git-lfs` en el SO e instalarlo en git con `git lfs install`.
+
 ### Puesta en marcha de la app demo
 
 `uv run streamlit run retina-oct-demo-app/app.py`
