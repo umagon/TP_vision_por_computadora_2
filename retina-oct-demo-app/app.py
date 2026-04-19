@@ -50,7 +50,7 @@ st.markdown("""
     .main-header {
         font-size: 2rem;
         font-weight: 700;
-        color: #1a1a2e;
+        color: #FFFFFF;
         text-align: center;
         padding: 1rem 0;
     }

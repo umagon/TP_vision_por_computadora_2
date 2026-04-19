@@ -47,28 +47,6 @@ class RetinaSAMAdapter(nn.Module):
             mask = torch.argmax(probs, dim=1)  # [B, H, W]
         return mask
 
-
-def load_segmentation_model_OLD(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> RetinaSAMAdapter:
-    """
-    Carga el modelo de segmentación con pesos entrenados.
-    Si no existen pesos, retorna el modelo con pesos de ImageNet.
-    """
-    model = RetinaSAMAdapter()
-
-    if os.path.exists(weights_path):
-        state_dict = torch.load(weights_path, map_location=DEVICE, weights_only=True)
-        model.load_state_dict(state_dict)
-        print(f"[Segmentación UNet] Pesos cargados desde: {weights_path}")
-    else:
-        print(f"[Segmentación UNet] AVISO: No se encontraron pesos en {weights_path}")
-        print("  → Usando pesos de ImageNet (encoder). Entrena el modelo primero.")
-
-    model.to(DEVICE)
-    model.eval()
-    return model
-
-
-
 def load_segmentation_model(weights_path: str = SEGMENTATION_UNET_WEIGHTS) -> RetinaSAMAdapter:
     model = RetinaSAMAdapter()
     

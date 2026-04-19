@@ -39,6 +39,10 @@ D.~Huang, E.~A. Swanson, C.~P. Lin, J.~S. Schuman, W.~G. Stinson, W.~Chang,
   ``Optical coherence tomography,'' \emph{Science}, vol. 254, no. 5035, pp.
   1178--1181, 1991.
 
+\bibitem{kaggle_platform}
+{Kaggle}, ``Kaggle: Your machine learning and data science community,''
+  \url{https://www.kaggle.com}, 2024.
+
 \bibitem{zhou2018}
 Z.~Zhou, M.~M. Rahman~Siddiquee, N.~Tajbakhsh, and J.~Liang, ``U-net++: A
   nested u-net architecture for medical image segmentation,'' in \emph{Deep
@@ -49,7 +53,7 @@ Z.~Zhou, M.~M. Rahman~Siddiquee, N.~Tajbakhsh, and J.~Liang, ``U-net++: A
 \bibitem{smp}
 \BIBentryALTinterwordspacing
 P.~Yakubovskiy, ``Segmentation models pytorch,'' GitHub repository, 2020.
-  [Online]. Available:
+  [Online]. Disponible en:
   \url{https://github.com/qubvel/segmentation_models.pytorch}
 \BIBentrySTDinterwordspacing
 

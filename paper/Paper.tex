@@ -64,7 +64,28 @@ OCT, segmentación semántica, clasificación de imágenes médicas, deep learni
 
 \section{Introducción}
 
-La tomografía de coherencia óptica (OCT) es una modalidad de imagen no invasiva que permite obtener cortes transversales de alta resolución de la retina. Esta técnica se ha convertido en una herramienta fundamental para el diagnóstico y seguimiento de diversas patologías oculares, incluyendo la neovascularización coroidal (CNV), el edema macular diabético (DME) y las drusas \cite{kermany2018}. La interpretación manual de estas imágenes requiere especialistas altamente entrenados, es subjetiva y consume tiempo significativo, lo que impulsa la necesidad de herramientas automatizadas basadas en deep learning.
+La tomografía de coherencia óptica (OCT) es una modalidad de imagen no invasiva que permite obtener cortes transversales de alta resolución de la retina. Esta técnica se ha convertido en una herramienta fundamental para el diagnóstico y seguimiento de diversas patologías oculares, incluyendo la neovascularización coroidal (CNV) \ref{fig:cnv}, el edema macular diabético (DME) \ref{fig:dme} y las drusas \ref{fig:drusen} \cite{kermany2018}. La interpretación manual de estas imágenes requiere especialistas altamente entrenados, es subjetiva y consume tiempo significativo, lo que impulsa la necesidad de herramientas automatizadas basadas en deep learning.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/CNV.jpeg}
+    \caption{Imagen OCT - CNV.}
+    \label{fig:cnv}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/DME.jpeg}
+    \caption{Imagen OCT - DME.}
+    \label{fig:dme}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/DRUSEN.jpeg}
+    \caption{Imagen OCT - Drusen.}
+    \label{fig:drusen}
+\end{figure}
 
 En los últimos años, las redes neuronales convolucionales han demostrado un desempeño notable en la clasificación automática de imágenes OCT. El trabajo seminal de Kermany et al. \cite{kermany2018} demostró que una red profunda puede clasificar imágenes OCT en cuatro categorías de diagnóstico con rendimiento comparable a expertos clínicos, utilizando transfer learning con InceptionV3. Posteriormente, De Fauw et al. \cite{defauw2018} presentaron un sistema de dos etapas desarrollado por DeepMind en colaboración con Moorfields Eye Hospital, donde primero se segmentan las estructuras retinales y luego se clasifica la patología, obteniendo resultados clínicamente aplicables en un espectro mas amplio de enfermedades.
 
@@ -86,7 +107,7 @@ Las contribuciones principales de este trabajo son:
 
 Se utilizan dos datasets públicos complementarios:
 
-\textbf{Dataset de segmentación:} se emplea el Retinal Layer Segmentation Dataset disponible en Kaggle, que contiene 220 imágenes OCT en formato \texttt{.npy} con resolución de $216 \times 500$ píxeles en escala de grises, acompañadas de máscaras de segmentación píxel a píxel para 8 capas retinales: ILM-RNFL, RNFL-GCL, GCL-IPL, IPL-INL, INL-OPL, OPL-ONL, ONL-IS e IS-OS.
+\textbf{Dataset de segmentación:} se emplea el Retinal Layer Segmentation Dataset disponible en Kaggle  \cite{kaggle_platform}, que contiene 220 imágenes OCT en formato \texttt{.npy} con resolución de $224 \times 512$ píxeles en escala de grises, acompañadas de máscaras de segmentación píxel a píxel para 8 capas retinales: ILM-RNFL, RNFL-GCL, GCL-IPL, IPL-INL, INL-OPL, OPL-ONL, ONL-IS e IS-OS.
 
 \textbf{Dataset de clasificación:} se utiliza el dataset público de Kermany et al. \cite{kermany2018} con cuatro categorías de diagnóstico. La distribución se detalla en la Tabla~\ref{tab:dataset}.
 
@@ -108,13 +129,13 @@ NORMAL & 990 & 508 & 1\,002 \\
 \end{tabular}
 \end{table}
 
-Para el entrenamiento de los clasificadores se utilizan 4\,000 imágenes seleccionadas mediante \texttt{WeightedRandomSampler} del conjunto original de 8\,003 imágenes, compensando el desbalance entre clases.
+Para el entrenamiento de los clasificadores se utilizan 2\,000 imágenes por clase seleccionadas mediante \texttt{WeightedRandomSampler} del conjunto original de 8\,000 imágenes, compensando el desbalance entre clases.
 
 \subsection{Modelo de segmentación}
 
-Para la segmentación semántica de capas retinales se emplea una arquitectura UNet++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder ResNet34 \cite{he2016deep} sin pesos preentrenados (\texttt{encoder\_weights=None}).
+Para la segmentación semántica de capas retinales se emplea una arquitectura UNet++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder ResNet34 \cite{he2016deep} con pesos preentrenados.
 
-Se eligió UNet++ sobre U-Net estándar porque sus conexiones densas anidadas mejoran la captura de detalles finos en las capas retinales, que son estructuras delgadas donde los bordes precisos son críticos para una segmentación correcta. ResNet34 como encoder ofrece un buen balance entre capacidad de reprecentación y costo computacional para imágenes médicas de un solo canal.
+Se eligió UNet++ sobre U-Net estándar porque sus conexiones densas anidadas mejoran la captura de detalles finos en las capas retinales, que son estructuras delgadas donde los bordes precisos son críticos para una segmentación correcta. ResNet34 como encoder ofrece un buen balance entre capacidad de representación y costo computacional para imágenes médicas de un solo canal.
 
 El modelo recibe imágenes de un canal (escala de grises) redimensionadas a $224 \times 512$ píxeles y produce una salida de 8 canales correspondientes a las capas retinales. Se utiliza \textit{Cross-Entropy Loss} como función de perdida, optimizador Adam con learning rate de $10^{-3}$, batch size de 8, y entrenamiento por 50 epochs. El dataset se divide en 80\% entrenamiento (176 imágenes) y 20\% validación (44 imágenes).
 
@@ -136,7 +157,7 @@ El tercer clasificador explora un enfoque intermedio: concatenar la imagen OCT o
 X = [I \| M] \in \mathbb{R}^{4 \times H \times W}
 \end{equation}
 
-Se utiliza ResNet50 con la primera capa convolucional modificada para aceptar 4 canales de entrada, inicializando el cuarto filtro como el promedio de los tres filtros RGB originales. La máscara se genera on-the-fly con el modelo UNet++ congelado (valores 0--7 normalizados a $[0, 1]$). Se aplican \textit{RandomHorizontalFlip} y \textit{RandomVerticalFlip} de forma coherente sobre la imagen y la máscara. El entrenamiento utiliza \texttt{WeightedRandomSampler} con 8\,000 muestras por epoch, batch size de 32, Adam con learning rate $10^{-4}$, y early stopping (patience de 5) sobre un máximo de 20 epochs.
+Se utiliza ResNet50 con la primera capa convolucional modificada para aceptar 4 canales de entrada, inicializando el cuarto filtro como el promedio de los tres filtros RGB originales. La máscara se genera \textit{on-the-fly} con el modelo UNet++ congelado (valores 0--7 normalizados a $[0, 1]$). Se aplican \textit{RandomHorizontalFlip} y \textit{RandomVerticalFlip} de forma coherente sobre la imagen y la máscara. El entrenamiento utiliza \texttt{WeightedRandomSampler} con 8\,000 muestras por epoch, batch size de 32, Adam con learning rate $10^{-4}$, y early stopping (patience de 5) sobre un máximo de 20 epochs.
 
 % ============================================================
 % III. RESULTADOS
@@ -167,23 +188,32 @@ Val Loss (mejor)       & 0.0181 \\
 \caption{rendimiento de segmentación por capa retinal}
 \label{tab:seg_per_class}
 \centering
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Capa} & \textbf{Dice} & \textbf{IoU} & \textbf{HD (px)} \\
+\textbf{-} & {Capa} & \textbf{Dice} & \textbf{IoU} & \textbf{HD (px)} \\
 \midrule
-ILM-RNFL  & 0.9988 & 0.9976 & 1.11 \\
-RNFL-GCL  & 0.9795 & 0.9599 & 1.23 \\
-GCL-IPL   & 0.9886 & 0.9775 & 1.63 \\
-IPL-INL   & 0.9704 & 0.9425 & 1.84 \\
-INL-OPL   & 0.9669 & 0.9360 & 2.15 \\
-OPL-ONL   & 0.9901 & 0.9804 & 1.99 \\
-ONL-IS    & 0.9781 & 0.9572 & 1.16 \\
-IS-OS     & 0.9789 & 0.9587 & 1.13 \\
+1 & ILM-RNFL  & 0.9988 & 0.9976 & 1.11 \\
+2 & RNFL-GCL  & 0.9795 & 0.9599 & 1.23 \\
+3 & GCL-IPL   & 0.9886 & 0.9775 & 1.63 \\
+4 & IPL-INL   & 0.9704 & 0.9425 & 1.84 \\
+5 & INL-OPL   & 0.9669 & 0.9360 & 2.15 \\
+6 & OPL-ONL   & 0.9901 & 0.9804 & 1.99 \\
+7 & ONL-IS    & 0.9781 & 0.9572 & 1.16 \\
+8 & IS-OS     & 0.9789 & 0.9587 & 1.13 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 El modelo alcanza un Dice macro de 0.98, con todas las capas superando un Dice de 0.96. La capa con menor rendimiento es INL-OPL (Dice = 0.967), consistente con ser una de las capas más delgadas y difíciles de delinear. La convergencia del entrenamiento fue estable, con la loss de validación descendiendo de 0.57 (epoch 1) a 0.02 (epoch 50).
+
+A continuación en la Figura~\ref{fig:webapp} se visualizan 2 imágenes con sus máscaras.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/muestra-segmentacion.png}
+    \caption{Visualización: de muestras con imagen + máscara + superposición + capas.}
+    \label{fig:segmentacion}
+\end{figure}
 
 \subsection{Comparación de clasificación}
 
@@ -208,16 +238,16 @@ Modelo 3 (híbrido 4-ch)   & \textbf{0.92} & \textbf{0.92} & \textbf{0.92} & \te
 \caption{F1-score por clase diagnóstica para los tres modelos}
 \label{tab:f1_per_class}
 \centering
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Clase} & \textbf{Mod. 1} & \textbf{Mod. 2} & \textbf{Mod. 3} & \textbf{$\Delta$ 1 vs 2} \\
+\textbf{Clase} & \textbf{Mod. 1} & \textbf{Mod. 2} & \textbf{Mod. 3} & \textbf{$\Delta$ 1 vs 2} & \textbf{$\Delta$ 1 vs 3} \\
 \midrule
-CNV    & 0.94 & 0.82 & 0.93 & $-0.12$ \\
-DME    & 0.94 & 0.78 & 0.93 & $-0.16$ \\
-DRUSEN & 0.89 & 0.54 & 0.89 & $-0.35$ \\
-NORMAL & 0.91 & 0.71 & 0.92 & $-0.20$ \\
+CNV    & 0.94 & 0.82 & 0.93 & $-0.12$ & $-0.01$ \\
+DME    & 0.94 & 0.78 & 0.93 & $-0.16$ & $-0.01$ \\
+DRUSEN & 0.89 & 0.54 & 0.89 & $-0.35$ & $0$ \\
+NORMAL & 0.91 & 0.71 & 0.92 & $-0.20$ & $-0.01$ \\
 \midrule
-\textbf{Macro} & \textbf{0.92} & 0.71 & \textbf{0.92} & $-0.21$ \\
+\textbf{Macro} & \textbf{0.92} & 0.71 & \textbf{0.92} & $-0.21$ & $0$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -226,9 +256,30 @@ El Modelo 1 (imágenes originales) y el Modelo 3 (híbrido) alcanzan ambos 92\% 
 
 \subsection{Análisis por clase}
 
-La clase más afectada por el uso exclusivo de máscaras de segmentación es DRUSEN, cuyo F1-score cae de 0.89 (Modelo 1) a 0.54 (Modelo 2), una diferencia de $\Delta = -0.35$. Esto es clínicamente coherente: las drusas son depósitos sub-retinales cuya detección depende de características de textura e intensidad visual que se pierden completamente al reducir la imagen a etiquetas discretas de clase. El Modelo 3 (híbrido) recupera el rendimiento en DRUSEN (F1 = 0.89), confirmando que la información visual de la imagen original es la que permite la detección.
+La clase más afectada por el uso exclusivo de máscaras de segmentación es DRUSEN, cuyo F1-score cae de 0.89 (Modelo 1) a 0.54 (Modelo 2), como se puede apreciar en la matriz de confusión de la Figura~\ref{fig:mc-model1} y \ref{fig:mc-model2}, una diferencia de $\Delta = -0.35$. Esto es clínicamente coherente: las drusas son depósitos sub-retinales cuya detección depende de características de textura e intensidad visual que se pierden completamente al reducir la imagen a etiquetas discretas de clase. El Modelo 3 (híbrido) recupera el rendimiento en DRUSEN (F1 = 0.89), confirmando que la información visual de la imagen original es la que permite la detección, como se visualiza en su matriz de confusión de la Figura~ \ref{fig:mc-model3}.
 
 En contraste, CNV es la clase menos afectada por la pérdida de información visual ($\Delta = -0.12$), posiblemente porque la neovascularización produce cambios estructurales más pronunciados que se preservan parcialmente en la máscara. El Modelo 2 muestra confusión significativa entre DRUSEN y NORMAL, lo cual sugiere que sin la información de textura, el clasificador no puede distinguir depósitos sub-retinales sutiles de una retina sana.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/MC-modelo1.png}
+    \caption{Matriz de confusión del modelo 1.}
+    \label{fig:mc-model1}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/MC-modelo2.png}
+    \caption{Matriz de confusión del modelo 2.}
+    \label{fig:mc-model2}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/MC-modelo3.png}
+    \caption{Matriz de confusión del modelo 3.}
+    \label{fig:mc-model3}
+\end{figure}
 
 % ============================================================
 % IV. DISCUSIÓN
@@ -262,13 +313,20 @@ Este trabajo presenta las siguientes limitaciones:
 % ============================================================
 \section{Aplicacion web}
 
-Para demostrar la utilidad práctica de la investigación, se desarrolló una aplicación web con Streamlit que integra los modelos entrenados (segmentación UNet++ y los clasificadores ResNet50). La aplicación permite al usuario cargar imágenes OCT y obtener: (1) la segmentación interactiva de las 8 capas retinales con overlay sobre la imagen original, (2) la predicción simultánea de los clasificadores con barras de probabilidad por clase, y (3) una vista comparativa que facilita la interpretación de los resultados. La Figura~\ref{fig:webapp} muestra una captura de la interfaz.
+Para demostrar la utilidad práctica de la investigación, se desarrolló una aplicación web con Streamlit que integra los modelos entrenados (segmentación UNet++ y los clasificadores ResNet50). La aplicación permite al usuario cargar imágenes OCT y obtener: (1) la segmentación interactiva de las 8 capas retinales con overlay sobre la imagen original, (2) la predicción simultánea de los clasificadores con barras de probabilidad por clase, y (3) una vista comparativa que facilita la interpretación de los resultados. La Figura~\ref{fig:webapp} muestra una captura de la página principal y la Figura~\ref{fig:comparativa-app}  la comparativa de 3 escenarios de clasificación.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{captura-demo.png}
-    \caption{captura de pantalla de la aplicación web de demostración desarrollada con Streamlit.}
+    \includegraphics[width=\linewidth]{figuras/captura-demo.png}
+    \caption{captura de pantalla de la página principal de la aplicación web de demostración desarrollada con Streamlit.}
     \label{fig:webapp}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figuras/comparacion-demo.png}
+    \caption{captura de pantalla de una comparación de 3 escenarios de clasificación de la aplicación web de demostración desarrollada con Streamlit.}
+    \label{fig:comparativa-app}
 \end{figure}
 
 % ============================================================

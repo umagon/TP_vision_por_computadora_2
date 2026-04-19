@@ -69,11 +69,3 @@ Todos usan ResNet50 con pesos preentrenados IMAGENET1K_V2.
 | `modelo1_raw_resnet50.pth` | ResNet50 entrenado con imágenes RGB directas |
 | `modelo2_seg_resnet50.pth` | ResNet50 entrenado con máscaras de segmentación coloreadas |
 | `modelo3_raw_seg_resnet50.pth` | ResNet50 entrenado con 4 canales (RGB + máscara) |
-
-Sin pesos, la app mostrará una advertencia y dará predicciones aleatorias.
-
-## Personalización
-
-- Edita `config.py` para cambiar clases, capas retinianas, rutas de pesos o tamaños de imagen.
-- El modelo de segmentación por defecto es UNet++. Para usar el UNet alternativo, setea la variable de entorno `SEGMENTATION_MODEL=unet`.
-- El backbone de clasificación se configura en `load_classifier_model(backbone="resnet")`.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  14 APR 2026 14:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  19 APR 2026 15:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -514,8 +514,8 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box60
 )
 (./Paper.aux
-LaTeX Info: Redefining \. on input line 16.
-LaTeX Info: Redefining \% on input line 16.
+LaTeX Info: Redefining \. on input line 15.
+LaTeX Info: Redefining \% on input line 15.
 )
 \openout1 = `Paper.aux'.
 
@@ -585,26 +585,25 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 54.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+<figuras/CNV.jpeg, id=84, 770.88pt x 497.86pt>
+File: figuras/CNV.jpeg Graphic file (type jpg)
+<use figuras/CNV.jpeg>
+Package pdftex.def Info: figuras/CNV.jpeg  used on input line 71.
+(pdftex.def)             Requested size: 252.0pt x 162.74457pt.
+<figuras/DME.jpeg, id=85, 770.88pt x 497.86pt>
+File: figuras/DME.jpeg Graphic file (type jpg)
+<use figuras/DME.jpeg>
+Package pdftex.def Info: figuras/DME.jpeg  used on input line 78.
+(pdftex.def)             Requested size: 252.0pt x 162.74457pt.
+<figuras/DRUSEN.jpeg, id=86, 770.88pt x 497.86pt>
+File: figuras/DRUSEN.jpeg Graphic file (type jpg)
+<use figuras/DRUSEN.jpeg>
+Package pdftex.def Info: figuras/DRUSEN.jpeg  used on input line 85.
+(pdftex.def)             Requested size: 252.0pt x 162.74457pt.
 
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 89
-.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
-[]\T1/ptm/m/n/10 Para el en-tre-na-mien-to de los cla-si-fi-ca-do-res se
- []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
-\T1/ptm/m/n/10 uti-li-zan 4000 imá-ge-nes se-lec-cio-na-das me-dian-te
- []
-
-
-Underfull \hbox (badness 6575) in paragraph at lines 111--112
-\T1/pcr/m/n/10 WeightedRandomSampler \T1/ptm/m/n/10 del con-jun-to ori-gi-nal d
-e
- []
+Underfull \vbox (badness 1048) has occurred while \output is active []
 
 
 
@@ -612,57 +611,100 @@ e
 ocal/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
-]
-Underfull \hbox (badness 1688) in paragraph at lines 115--116
-\T1/ptm/m/n/10 em-plea una ar-qui-tec-tu-ra UNet++ [[]4[]] im-ple-men-ta-da me-
+ <./figuras/CNV.jpeg> <./figuras/DME.jpeg>]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 11
+0.
 
+(/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+Underfull \hbox (badness 4621) in paragraph at lines 132--133
+[]\T1/ptm/m/n/10 Para el en-tre-na-mien-to de los cla-si-fi-ca-do-res se uti-
+ []
+
+
+Underfull \hbox (badness 2744) in paragraph at lines 132--133
+\T1/ptm/m/n/10 li-zan 2000 imá-ge-nes por cla-se se-lec-cio-na-das me-dian-te
  []
 
 
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <./figuras/DRUSEN.jpeg>]
+<figuras/muestra-segmentacion.png, id=135, 1424.32124pt x 492.84125pt>
+File: figuras/muestra-segmentacion.png Graphic file (type png)
+<use figuras/muestra-segmentacion.png>
+Package pdftex.def Info: figuras/muestra-segmentacion.png  used on input line 2
+13.
+(pdftex.def)             Requested size: 252.0pt x 87.19604pt.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+<figuras/MC-modelo1.png, id=142, 633.36626pt x 674.52pt>
+File: figuras/MC-modelo1.png Graphic file (type png)
+<use figuras/MC-modelo1.png>
+Package pdftex.def Info: figuras/MC-modelo1.png  used on input line 265.
+(pdftex.def)             Requested size: 252.0pt x 268.37259pt.
+<figuras/MC-modelo2.png, id=143, 631.35875pt x 687.56876pt>
+File: figuras/MC-modelo2.png Graphic file (type png)
+<use figuras/MC-modelo2.png>
+Package pdftex.def Info: figuras/MC-modelo2.png  used on input line 272.
+(pdftex.def)             Requested size: 252.0pt x 274.4351pt.
+<figuras/MC-modelo3.png, id=144, 621.32124pt x 686.565pt>
+File: figuras/MC-modelo3.png Graphic file (type png)
+<use figuras/MC-modelo3.png>
+Package pdftex.def Info: figuras/MC-modelo3.png  used on input line 279.
+(pdftex.def)             Requested size: 252.0pt x 278.4554pt.
+
+
+[3 <./figuras/muestra-segmentacion.png>]
 
 
 
-[2]
+[4 <./figuras/MC-modelo1.png> <./figuras/MC-modelo2.png> <./figuras/MC-modelo3.
+png>]
+<figuras/captura-demo.png, id=173, 1466.47874pt x 873.2625pt>
+File: figuras/captura-demo.png Graphic file (type png)
+<use figuras/captura-demo.png>
+Package pdftex.def Info: figuras/captura-demo.png  used on input line 320.
+(pdftex.def)             Requested size: 252.0pt x 150.05164pt.
+<figuras/comparacion-demo.png, id=174, 1459.4525pt x 921.4425pt>
+File: figuras/comparacion-demo.png Graphic file (type png)
+<use figuras/comparacion-demo.png>
+Package pdftex.def Info: figuras/comparacion-demo.png  used on input line 327.
+(pdftex.def)             Requested size: 252.0pt x 159.10367pt.
 
-<captura-demo.png, id=131, 1545.775pt x 923.45pt>
-File: captura-demo.png Graphic file (type png)
-<use captura-demo.png>
-Package pdftex.def Info: captura-demo.png  used on input line 269.
-(pdftex.def)             Requested size: 252.0pt x 150.54497pt.
 
-
-[3] (./Paper.bbl
+(./Paper.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-)
+[5 <./figuras/captura-demo.png> <./figuras/comparacion-demo.png>])
 
-[4 <./captura-demo.png>] (./Paper.aux
-LaTeX Info: Redefining \. on input line 16.
-LaTeX Info: Redefining \% on input line 16.
+
+
+[6
+
+] (./Paper.aux
+LaTeX Info: Redefining \. on input line 15.
+LaTeX Info: Redefining \% on input line 15.
 )
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `Paper.out' has not changed.
-(rerunfilecheck)             Checksum: C56208392BB5D4FBF8DF5CAADFBF8FA3;3546.
+(rerunfilecheck)             Checksum: EFEF6061BDE251850053C1BBC73D03E5;3547.
  ) 
 Here is how much of TeX's memory you used:
- 14647 strings out of 473190
- 233996 string characters out of 5715800
- 663762 words of memory out of 5000000
- 37653 multiletter control sequences out of 15000+600000
+ 14723 strings out of 473190
+ 235973 string characters out of 5715800
+ 666432 words of memory out of 5000000
+ 37718 multiletter control sequences out of 15000+600000
  670329 words of font info for 156 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,1242b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,1242b,621s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
 /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
@@ -678,10 +720,10 @@ texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/
 -dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fon
 ts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on Paper.pdf (4 pages, 495168 bytes).
+Output written on Paper.pdf (6 pages, 3137396 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 197 compressed objects within 2 object streams
- 51 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 280 PDF objects out of 1000 (max. 8388607)
+ 224 compressed objects within 3 object streams
+ 62 named destinations out of 1000 (max. 500000)
+ 198 words of extra memory for PDF output out of 10000 (max. 10000000)
 
