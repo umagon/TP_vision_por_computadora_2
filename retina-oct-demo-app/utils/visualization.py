@@ -26,6 +26,7 @@ def create_overlay(
     img_rgb = np.stack([np.array(img)] * 3, axis=-1).astype(np.float32)
 
     # Redimensionar la máscara al mismo tamaño que la imagen
+    mask = np.pad(mask, ((136,136),(0,0)))
     mask_pil = Image.fromarray(mask.astype(np.uint8))
     mask_resized = np.array(
         mask_pil.resize((target_size, target_size), Image.NEAREST)
