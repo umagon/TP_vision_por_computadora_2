@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  14 APR 2026 05:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  14 APR 2026 14:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -630,14 +630,17 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [2]
 
-<captura-demo.png, id=131, 1282.7925pt x 540.0175pt>
+<captura-demo.png, id=131, 1545.775pt x 923.45pt>
 File: captura-demo.png Graphic file (type png)
 <use captura-demo.png>
 Package pdftex.def Info: captura-demo.png  used on input line 269.
-(pdftex.def)             Requested size: 252.0pt x 106.08167pt.
+(pdftex.def)             Requested size: 252.0pt x 150.54497pt.
 
 
 [3] (./Paper.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 )
 
@@ -649,15 +652,8 @@ LaTeX Info: Redefining \% on input line 16.
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-Package rerunfilecheck Warning: File `Paper.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Paper.out':
-(rerunfilecheck)             Before: 9996DB8298F8CE03BF666E57E69C9ED7;3543
-(rerunfilecheck)             After:  C56208392BB5D4FBF8DF5CAADFBF8FA3;3546.
+Package rerunfilecheck Info: File `Paper.out' has not changed.
+(rerunfilecheck)             Checksum: C56208392BB5D4FBF8DF5CAADFBF8FA3;3546.
  ) 
 Here is how much of TeX's memory you used:
  14647 strings out of 473190
@@ -682,7 +678,7 @@ texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/
 -dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fon
 ts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on Paper.pdf (4 pages, 387249 bytes).
+Output written on Paper.pdf (4 pages, 495168 bytes).
 PDF statistics:
  237 PDF objects out of 1000 (max. 8388607)
  197 compressed objects within 2 object streams
