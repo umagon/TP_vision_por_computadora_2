@@ -2,7 +2,7 @@
 
 <img src="https://github.com/hernancontigiani/ceia_memorias_especializacion/raw/master/Figures/logoFIUBA.jpg" width="500" align="center">
 
-## Modelo clasificador de enfermedades de la retina del ojo
+## Segmentación y clasificación de patologías retinales en imágenes OCT mediante Deep Learning
 
 ### Miembros:
 
@@ -11,10 +11,10 @@
 - Daniel Paniagua
 - Brian Salamone
 
-### Instalacion
+### Instalación
 
 `uv sync`
 
-### Puesta en marcha
+### Puesta en marcha de la app demo
 
 `uv run streamlit run retina-oct-demo-app/app.py`
