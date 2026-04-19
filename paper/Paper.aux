@@ -24,6 +24,7 @@
 \citation{zhou2018}
 \citation{smp}
 \citation{he2016deep}
+\citation{kaggle_platform}
 \citation{he2016deep}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Imagen OCT - Drusen.}}{2}{figure.caption.3}\protected@file@percent }
 \newlabel{fig:drusen}{{3}{2}{Imagen OCT - Drusen}{figure.caption.3}{}}
@@ -34,20 +35,18 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Modelo de segmentación}{2}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Clasificación sobre imágenes originales (Modelo 1)}{2}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Clasificación sobre máscaras de segmentación (Modelo 2)}{2}{subsection.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Clasificación híbrida: imagen + máscara (Modelo 3)}{2}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Clasificación híbrida: imagen + máscara (Modelo 3)}{3}{subsection.2.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Resultados}{3}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Rendimiento de la segmentación}{3}{subsection.3.1}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces métricas globales de segmentación (UNet++ con ResNet34)}}{3}{table.caption.5}\protected@file@percent }
 \newlabel{tab:seg_results}{{II}{3}{métricas globales de segmentación (UNet++ con ResNet34)}{table.caption.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces rendimiento de segmentación por capa retinal}}{3}{table.caption.6}\protected@file@percent }
 \newlabel{tab:seg_per_class}{{III}{3}{rendimiento de segmentación por capa retinal}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Comparación de clasificación}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Visualización: de muestras con imagen + máscara + superposición + capas.}}{3}{figure.caption.7}\protected@file@percent }
 \newlabel{fig:segmentacion}{{4}{3}{Visualización: de muestras con imagen + máscara + superposición + capas}{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Comparación de clasificación}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Comparación de clasificadores sobre el set de test (4\,015 imágenes)}}{3}{table.caption.8}\protected@file@percent }
 \newlabel{tab:classification}{{IV}{3}{Comparación de clasificadores sobre el set de test (4\,015 imágenes)}{table.caption.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces F1-score por clase diagnóstica para los tres modelos}}{3}{table.caption.9}\protected@file@percent }
-\newlabel{tab:f1_per_class}{{V}{3}{F1-score por clase diagnóstica para los tres modelos}{table.caption.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Análisis por clase}{3}{subsection.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Discusión}{3}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Pérdida de información discriminativa}{3}{subsection.4.1}\protected@file@percent }
@@ -55,20 +54,22 @@
 \newlabel{fig:mc-model1}{{5}{4}{Matriz de confusión del modelo 1}{figure.caption.10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Matriz de confusión del modelo 2.}}{4}{figure.caption.11}\protected@file@percent }
 \newlabel{fig:mc-model2}{{6}{4}{Matriz de confusión del modelo 2}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces F1-score por clase diagnóstica para los tres modelos}}{4}{table.caption.9}\protected@file@percent }
+\newlabel{tab:f1_per_class}{{V}{4}{F1-score por clase diagnóstica para los tres modelos}{table.caption.9}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Matriz de confusión del modelo 3.}}{4}{figure.caption.12}\protected@file@percent }
 \newlabel{fig:mc-model3}{{7}{4}{Matriz de confusión del modelo 3}{figure.caption.12}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Discrepancia de dominios}{4}{subsection.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Calidad de la segmentación vs. utilidad para clasificación}{4}{subsection.4.3}\protected@file@percent }
-\bibstyle{IEEEtran}
-\bibdata{references}
-\bibcite{kermany2018}{1}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Limitaciones}{5}{subsection.4.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Aplicacion web}{5}{section.5}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces captura de pantalla de la página principal de la aplicación web de demostración desarrollada con Streamlit.}}{5}{figure.caption.13}\protected@file@percent }
 \newlabel{fig:webapp}{{8}{5}{captura de pantalla de la página principal de la aplicación web de demostración desarrollada con Streamlit}{figure.caption.13}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusiones}{5}{section.6}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces captura de pantalla de una comparación de 3 escenarios de clasificación de la aplicación web de demostración desarrollada con Streamlit.}}{5}{figure.caption.14}\protected@file@percent }
 \newlabel{fig:comparativa-app}{{9}{5}{captura de pantalla de una comparación de 3 escenarios de clasificación de la aplicación web de demostración desarrollada con Streamlit}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusiones}{5}{section.6}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{kermany2018}{1}
 \bibcite{defauw2018}{2}
 \bibcite{huang1991}{3}
 \bibcite{kaggle_platform}{4}

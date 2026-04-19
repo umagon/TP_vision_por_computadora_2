@@ -1,2 +1,0 @@
-model,Dice_mean,IoU_mean,Infer_ms,GPU_MB,Params_M
-U-Net++,0.8439,0.8043,1345.59,0.0,36.63

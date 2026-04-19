@@ -109,7 +109,7 @@ Se utilizan dos datasets públicos complementarios:
 
 \textbf{Dataset de segmentación:} se emplea el Retinal Layer Segmentation Dataset disponible en Kaggle  \cite{kaggle_platform}, que contiene 220 imágenes OCT en formato \texttt{.npy} con resolución de $224 \times 512$ píxeles en escala de grises, acompañadas de máscaras de segmentación píxel a píxel para 8 capas retinales: ILM-RNFL, RNFL-GCL, GCL-IPL, IPL-INL, INL-OPL, OPL-ONL, ONL-IS e IS-OS.
 
-\textbf{Dataset de clasificación:} se utiliza el dataset público de Kermany et al. \cite{kermany2018} con cuatro categorías de diagnóstico. La distribución se detalla en la Tabla~\ref{tab:dataset}.
+\textbf{Dataset de clasificación:} se utiliza el dataset público de Kermany et al. \cite{kermany2018} con cuatro categorías de diagnóstico. La distribución que utilizamos, fue un subset que se detalla en la Tabla~\ref{tab:dataset}.
 
 \begin{table}[h]
 \caption{distribución del dataset de clasificación por clase.}
@@ -119,12 +119,12 @@ Se utilizan dos datasets públicos complementarios:
 \toprule
 \textbf{Clase} & \textbf{Train} & \textbf{Val} & \textbf{Test} \\
 \midrule
-CNV    & 1\,041 & 508 & 990 \\
-DME    & 990 & 508 & 1\,002 \\
-DRUSEN & 979 & 508 & 1\,021 \\
-NORMAL & 990 & 508 & 1\,002 \\
+CNV    & 2\,000 & 508 & 990 \\
+DME    & 2\,000 & 508 & 1\,002 \\
+DRUSEN & 2\,000& 508 & 1\,021 \\
+NORMAL & 2\,000 & 508 & 1\,002 \\
 \midrule
-\textbf{Total} & 4\,000 & 2\,032 & 4\,015 \\
+\textbf{Total} & 8\,000 & 2\,032 & 4\,015 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -133,7 +133,7 @@ Para el entrenamiento de los clasificadores se utilizan 2\,000 imágenes por cla
 
 \subsection{Modelo de segmentación}
 
-Para la segmentación semántica de capas retinales se emplea una arquitectura UNet++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder ResNet34 \cite{he2016deep} con pesos preentrenados.
+Para la segmentación semántica de capas retinales se emplea una arquitectura UNet++ \cite{zhou2018} implementada mediante la biblioteca \texttt{segmentation\_models\_pytorch} \cite{smp}, con un encoder ResNet34 \cite{he2016deep} con pesos preentrenados con Imagenet y \textit{fine tunning} con el dataset de Kaggle  \cite{kaggle_platform}.
 
 Se eligió UNet++ sobre U-Net estándar porque sus conexiones densas anidadas mejoran la captura de detalles finos en las capas retinales, que son estructuras delgadas donde los bordes precisos son críticos para una segmentación correcta. ResNet34 como encoder ofrece un buen balance entre capacidad de representación y costo computacional para imágenes médicas de un solo canal.
 
