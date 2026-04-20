@@ -1,6 +1,5 @@
 """
 Configuración central del proyecto.
-Ajusta estas rutas y parámetros según tu entorno.
 """
 import os
 

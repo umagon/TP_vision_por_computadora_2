@@ -6,9 +6,6 @@ App web Streamlit con 4 secciones:
   2. Segmentación interactiva de capas retinianas con UNet++.
   3. Clasificación de patología en tres escenarios (raw / seg / hybrid).
   4. Comparativa visual y numérica de resultados.
-
-Ejecutar con:
-    streamlit run app.py
 """
 import streamlit as st
 import numpy as np
