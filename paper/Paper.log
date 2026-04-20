@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  19 APR 2026 16:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.8.26)  19 APR 2026 18:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -657,11 +657,11 @@ File: figuras/MC-modelo2.png Graphic file (type png)
 <use figuras/MC-modelo2.png>
 Package pdftex.def Info: figuras/MC-modelo2.png  used on input line 272.
 (pdftex.def)             Requested size: 252.0pt x 274.4351pt.
-<figuras/MC-modelo3.png, id=143, 621.32124pt x 686.565pt>
+<figuras/MC-modelo3.png, id=143, 626.34pt x 686.565pt>
 File: figuras/MC-modelo3.png Graphic file (type png)
 <use figuras/MC-modelo3.png>
 Package pdftex.def Info: figuras/MC-modelo3.png  used on input line 279.
-(pdftex.def)             Requested size: 252.0pt x 278.4554pt.
+(pdftex.def)             Requested size: 252.0pt x 276.23445pt.
 
 
 [3 <./figuras/muestra-segmentacion.png>]
@@ -725,7 +725,7 @@ texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/
 -dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fon
 ts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on Paper.pdf (6 pages, 3137617 bytes).
+Output written on Paper.pdf (6 pages, 3140411 bytes).
 PDF statistics:
  281 PDF objects out of 1000 (max. 8388607)
  225 compressed objects within 3 object streams

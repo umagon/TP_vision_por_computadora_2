@@ -44,6 +44,10 @@ def preprocess_for_classifier(image: Image.Image) -> torch.Tensor:
     arr = np.array(img, dtype=np.float32) / 255.0
     arr = np.transpose(arr, (2, 0, 1))  # [H,W,C] → [C,H,W]
     tensor = torch.from_numpy(arr).unsqueeze(0)  # [1,3,224,224]
+    # Normalización para imagenet
+    mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1)
+    std = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1)
+    tensor = (tensor - mean) / std
     return tensor.to(DEVICE)
 
 
@@ -67,11 +71,15 @@ def preprocess_mask_for_classifier(mask: np.ndarray) -> torch.Tensor:
     Preprocesa la máscara de segmentación como imagen RGB coloreada
     para el Modelo 2 (clasificación sobre máscara).
     """
-    mask_rgb = mask_to_rgb(mask)
-    mask_rgb = mask_rgb.resize((224, 224), Image.NEAREST)
-    arr = np.array(mask_rgb, dtype=np.float32) / 255.0
-    arr = np.transpose(arr, (2, 0, 1))  # [H,W,C] → [C,H,W]
+    mask_rgb = Image.fromarray(mask.astype(np.uint8)).resize((224, 224), Image.NEAREST)
+    arr = np.array(mask_rgb, dtype=np.float32) / 7.0
+    arr = np.stack([arr, arr, arr], axis=0)  # [3,H,W]
     tensor = torch.from_numpy(arr).unsqueeze(0)  # [1,3,224,224]
+    # Normalización para imagenet
+    mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1)
+    std = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1)
+    tensor = (tensor - mean) / std
+
     return tensor.to(DEVICE)
 
 
@@ -84,11 +92,15 @@ def preprocess_hybrid(image: Image.Image, mask: np.ndarray) -> torch.Tensor:
     img = image.convert("RGB").resize((224, 224), Image.BILINEAR)
     arr_rgb = np.array(img, dtype=np.float32) / 255.0
     arr_rgb = np.transpose(arr_rgb, (2, 0, 1))  # [3, H, W]
+    # Normalización para imagenet
+    mean = np.array([0.485, 0.456, 0.406]).reshape(3, 1, 1)
+    std = np.array([0.229, 0.224, 0.225]).reshape(3, 1, 1)
+    arr_rgb = (arr_rgb - mean) / std
 
     # Canal de máscara (resize + normalizar)
     mask_pil = Image.fromarray(mask.astype(np.uint8))
     mask_resized = mask_pil.resize((224, 224), Image.NEAREST)
-    arr_mask = np.array(mask_resized, dtype=np.float32) / (NUM_SEG_CLASSES - 1)  # normalizar a [0, 1]
+    arr_mask = np.array(mask_resized, dtype=np.float32) / 7.0  # normalizar a [0, 1]
     arr_mask = arr_mask[np.newaxis, ...]  # [1, H, W]
 
     # Concatenar: [4, 224, 224]
@@ -119,7 +131,7 @@ def run_segmentation(
     with torch.no_grad():
         logits = model(x)                       # [1, 8, 224, 512]
         probs = torch.softmax(logits, dim=1)
-        mask = torch.argmax(probs, dim=1)       # [1, 224, 512]
+        mask = torch.argmax(logits, dim=1)       # [1, 224, 512]
 
     mask_onehot = masks_to_onehot(mask, NUM_SEG_CLASSES)
 
@@ -169,6 +181,7 @@ def run_classification(
     # ── Modelo 3: hybrid RGB + máscara (4 canales) ──
     if classifier_hybrid is not None:
         x_hyb = preprocess_hybrid(image, mask)  # [1, 4, 224, 224]
+        x_hyb = x_hyb.float()  # asegurar tipo float32 para el modelo
         probs_hyb = classifier_hybrid.predict_proba(x_hyb).squeeze(0).cpu().numpy()
         pred_idx_hyb = int(np.argmax(probs_hyb))
         results["hybrid"] = {

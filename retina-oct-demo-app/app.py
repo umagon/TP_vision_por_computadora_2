@@ -42,6 +42,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.set_option('client.showErrorDetails', False)  # Ocultar detalles de errores en la interfaz
+
 # ─────────────────────────────────────────────
 # CSS personalizado
 # ─────────────────────────────────────────────
@@ -216,7 +218,7 @@ elif section == "🔬 Segmentación":
 
         with col_img:
             st.subheader("Imagen Original")
-            st.image(image, use_column_width=True, clamp=True)
+            st.image(image, width="stretch", clamp=True)
 
         # Ejecutar segmentación
         with st.spinner("Segmentando capas retinianas..."):
@@ -229,7 +231,7 @@ elif section == "🔬 Segmentación":
 
         with col_seg:
             st.subheader("Segmentación (Overlay)")
-            st.image(overlay_img, use_column_width=True, clamp=True)
+            st.image(overlay_img, width="stretch", clamp=True)
 
         # Info
         st.success(f"Segmentación completada en {elapsed:.2f}s")
@@ -248,7 +250,7 @@ elif section == "🔬 Segmentación":
         st.dataframe(layer_data, width=True)
 
         if show_legend:
-            st.plotly_chart(create_segmentation_legend(), use_column_width=True)
+            st.plotly_chart(create_segmentation_legend(), width="stretch")
 
         # Guardar en session_state para uso en otras secciones
         st.session_state["seg_result"] = seg_result
@@ -299,7 +301,7 @@ elif section == "🧪 Clasificación":
                 """, unsafe_allow_html=True)
                 st.plotly_chart(
                     create_prob_bars(pred["probs"], "Probabilidades (Raw)"),
-                    use_column_width=True,
+                    width="stretch",
                 )
 
         if "seg" in cls:
@@ -315,7 +317,7 @@ elif section == "🧪 Clasificación":
                 """, unsafe_allow_html=True)
                 st.plotly_chart(
                     create_prob_bars(pred["probs"], "Probabilidades (Seg)"),
-                    use_column_width=True,
+                    width="stretch",
                 )
 
         if "hybrid" in cls:
@@ -331,7 +333,7 @@ elif section == "🧪 Clasificación":
                 """, unsafe_allow_html=True)
                 st.plotly_chart(
                     create_prob_bars(pred["probs"], "Probabilidades (Hybrid)"),
-                    use_column_width=True,
+                    width="stretch",
                 )
 
         # Overlay de segmentación
@@ -340,8 +342,8 @@ elif section == "🧪 Clasificación":
 
         st.subheader("Segmentación utilizada")
         c1, c2 = st.columns(2)
-        c1.image(image.convert("L").resize(SEG_IMG_SIZE[::-1], Image.BILINEAR), caption="Original", use_column_width=True)
-        c2.image(overlay_img, caption="Con overlay de capas", use_column_width=True)
+        c1.image(image.convert("L").resize(SEG_IMG_SIZE[::-1], Image.BILINEAR), caption="Original", width="stretch")
+        c2.image(overlay_img, caption="Con overlay de capas", width="stretch")
 
         # Guardar resultados
         st.session_state["cls_results"] = cls
@@ -391,7 +393,7 @@ elif section == "📊 Comparativa":
             probs_dict["Modelo 3 (Hybrid)"] = cls["hybrid"]["probs"]
 
         fig = create_comparison_chart(probs_dict)
-        st.plotly_chart(fig, use_column_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         # Diferencias numéricas
         st.subheader("Probabilidades por Clase")
@@ -429,8 +431,8 @@ elif section == "📊 Comparativa":
             overlay = create_overlay(img, mask, alpha=overlay_alpha)
 
             c1, c2 = st.columns(2)
-            c1.image(img.convert("L").resize(SEG_IMG_SIZE[::-1], Image.BILINEAR), caption="Original", use_column_width=True)
-            c2.image(overlay, caption="Segmentación", use_column_width=True)
+            c1.image(img.convert("L").resize(SEG_IMG_SIZE[::-1], Image.BILINEAR), caption="Original", width="stretch")
+            c2.image(overlay, caption="Segmentación", width="stretch")
 
 
 # ─────────────────────────────────────────────
