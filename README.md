@@ -40,6 +40,7 @@ El paper completo en formato IEEE se encuentra en [`paper/Paper.pdf`](paper/Pape
 ├── classification3.ipynb       # Notebook de clasificación - Modelo 3 (híbrido 4 canales)
 ├── paper/                      # Paper en formato IEEE (LaTeX + PDF compilado)
 ├── sample_data/                # Datos de muestra para pruebas rápidas
+├── tp/                         # Pautas del TP, propuesta, presentación, video demo
 ├── retina-oct-demo-app/        # Aplicación web demo (Streamlit)
 │   ├── app.py                  # Punto de entrada de la app
 │   ├── models/                 # Módulos de inferencia (segmentación, clasificación, pipeline)
